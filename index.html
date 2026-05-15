@@ -20,17 +20,12 @@
     }
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Noto Sans KR', sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      min-height: 100vh;
-      max-width: 480px;
-      margin: 0 auto;
-      padding: 0 0 80px;
+      background: var(--bg); color: var(--text);
+      min-height: 100vh; max-width: 480px; margin: 0 auto; padding: 0 0 80px;
     }
     h1 { font-size: 1.4rem; font-weight: 700; }
     h2 { font-size: 1.1rem; font-weight: 600; }
 
-    /* ── Header ── */
     .app-header {
       position: sticky; top: 0; z-index: 100;
       background: var(--bg); border-bottom: 1px solid var(--border);
@@ -43,7 +38,20 @@
     }
     .icon-btn:hover { color: var(--text); }
 
-    /* ── Cards ── */
+    /* ── Total Assets ── */
+    .total-assets-card {
+      margin: 10px 16px 0;
+      background: linear-gradient(135deg, #1a2e4a, #1a2535);
+      border-radius: 16px; padding: 18px 20px;
+      border: 1px solid var(--accent);
+    }
+    .total-assets-label { font-size: .75rem; color: var(--accent); font-weight: 600; letter-spacing: .5px; margin-bottom: 6px; }
+    .total-assets-value { font-size: 2.2rem; font-weight: 800; color: var(--text); line-height: 1.1; }
+    .total-assets-breakdown { display: flex; gap: 16px; margin-top: 10px; }
+    .total-assets-chip { background: rgba(0,0,0,.2); border-radius: 8px; padding: 6px 10px; font-size: .78rem; }
+    .total-assets-chip-label { color: var(--muted); margin-bottom: 2px; }
+    .total-assets-chip-value { color: var(--text); font-weight: 600; }
+
     .card {
       background: var(--card); border-radius: 16px;
       padding: 18px; margin: 12px 16px; border: 1px solid var(--border);
@@ -57,12 +65,8 @@
     .profit { color: var(--profit); }
     .loss   { color: var(--loss); }
 
-    /* ── Portfolio Table ── */
     .portfolio-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
-    .portfolio-table th {
-      color: var(--muted); font-weight: 500; padding: 6px 4px;
-      text-align: right; font-size: 0.75rem;
-    }
+    .portfolio-table th { color: var(--muted); font-weight: 500; padding: 6px 4px; text-align: right; font-size: 0.75rem; }
     .portfolio-table th:first-child { text-align: left; }
     .portfolio-table td { padding: 10px 4px; text-align: right; border-top: 1px solid var(--border); }
     .portfolio-table td:first-child { text-align: left; }
@@ -70,30 +74,21 @@
     .stock-name { font-weight: 500; }
     .stock-qty { color: var(--muted); font-size: 0.75rem; }
 
-    /* ── Summary Chips ── */
     .summary-row { display: flex; gap: 12px; margin-bottom: 14px; }
     .summary-chip { flex: 1; background: var(--card2); border-radius: 12px; padding: 12px 14px; text-align: center; }
     .summary-chip-label { font-size: 0.7rem; color: var(--muted); margin-bottom: 4px; }
     .summary-chip-value { font-size: 1rem; font-weight: 700; }
 
-    /* ── Progress Bars ── */
     .goal-item { margin-bottom: 16px; }
     .goal-item:last-child { margin-bottom: 0; }
     .goal-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 6px; }
     .goal-label { font-size: 0.9rem; font-weight: 500; }
     .goal-amounts { font-size: 0.8rem; color: var(--muted); }
     .progress-track { height: 10px; background: var(--border); border-radius: 99px; overflow: hidden; }
-    .progress-fill {
-      height: 100%; border-radius: 99px;
-      transition: width 1s ease-out, background-color 0.5s;
-    }
+    .progress-fill { height: 100%; border-radius: 99px; transition: width 1s ease-out, background-color 0.5s; }
 
-    /* ── Manual Assets ── */
     .asset-list { display: flex; flex-direction: column; gap: 10px; }
-    .asset-item {
-      background: var(--card2); border-radius: 12px;
-      padding: 12px 14px;
-    }
+    .asset-item { background: var(--card2); border-radius: 12px; padding: 12px 14px; }
     .asset-item-row { display: flex; align-items: center; justify-content: space-between; }
     .asset-info { flex: 1; }
     .asset-name { font-size: 0.9rem; font-weight: 500; }
@@ -104,8 +99,7 @@
     .asset-actions { display: flex; gap: 4px; flex-wrap: wrap; justify-content: flex-end; }
     .sm-btn {
       background: none; border: 1px solid var(--border); color: var(--muted);
-      border-radius: 6px; padding: 4px 8px; font-size: 0.75rem;
-      cursor: pointer; transition: all .2s;
+      border-radius: 6px; padding: 4px 8px; font-size: 0.75rem; cursor: pointer; transition: all .2s;
     }
     .sm-btn:hover { border-color: var(--accent); color: var(--accent); }
     .sm-btn.del:hover { border-color: var(--loss); color: var(--loss); }
@@ -121,7 +115,6 @@
     }
     .add-asset-btn:hover { border-color: var(--accent); color: var(--accent); }
 
-    /* ── KOSPI Tracker ── */
     .kospi-display { display: flex; align-items: flex-end; gap: 12px; margin-bottom: 16px; }
     .kospi-price { font-size: 2rem; font-weight: 700; }
     .kospi-change { font-size: 0.9rem; padding-bottom: 4px; }
@@ -134,17 +127,15 @@
     .kospi-achieved.reached  { background: rgba(74,222,128,.15); color: var(--profit); }
     .kospi-achieved.not-reached { background: var(--card2); color: var(--muted); }
 
-    /* ── Alerts ── */
     .alert-list { display: flex; flex-direction: column; gap: 8px; }
     .alert-item {
       background: var(--card2); border-radius: 10px;
       padding: 10px 14px; display: flex; align-items: center; justify-content: space-between; font-size: 0.85rem;
     }
     .alert-tag { font-size: 0.7rem; padding: 2px 8px; border-radius: 20px; margin-left: 8px; }
-    .alert-tag.earnings     { background: #1e3a5f; color: var(--accent); }
-    .alert-tag.kospi-alert  { background: #2d1b69; color: #a78bfa; }
+    .alert-tag.earnings    { background: #1e3a5f; color: var(--accent); }
+    .alert-tag.stock-alert { background: #1a3a2a; color: var(--profit); }
 
-    /* ── Global Inputs ── */
     input[type="text"], input[type="number"], input[type="date"],
     input[type="password"], select, .kospi-target-input {
       background: var(--card2); border: 1px solid var(--border);
@@ -154,12 +145,7 @@
     ::placeholder { color: var(--muted); }
     select option { background: var(--card); }
 
-    /* ── Buttons ── */
-    .btn {
-      padding: 12px 20px; border-radius: 10px; font-size: 0.9rem;
-      font-weight: 600; cursor: pointer; border: none;
-      transition: opacity .2s, transform .1s;
-    }
+    .btn { padding: 12px 20px; border-radius: 10px; font-size: 0.9rem; font-weight: 600; cursor: pointer; border: none; transition: opacity .2s, transform .1s; }
     .btn:active { transform: scale(0.98); }
     .btn-primary { background: var(--accent); color: #fff; }
     .btn-primary:hover { opacity: 0.9; }
@@ -167,7 +153,6 @@
     .btn-ghost:hover { color: var(--text); }
     .btn-full { width: 100%; }
 
-    /* ── Settings Screen ── */
     #settings-screen { padding: 20px 16px; display: none; }
     #settings-screen.active { display: block; }
     .settings-title { font-size: 1.6rem; font-weight: 700; margin-bottom: 6px; }
@@ -176,33 +161,27 @@
       width: 100%; padding: 14px;
       background: linear-gradient(135deg, #1e3a5f, #1a2535);
       border: 1px solid var(--accent); border-radius: 12px;
-      color: var(--accent); font-size: 0.95rem; font-weight: 600;
-      cursor: pointer; margin-bottom: 24px;
-      display: flex; align-items: center; justify-content: center; gap: 8px;
-      transition: opacity .2s;
+      color: var(--accent); font-size: 0.95rem; font-weight: 600; cursor: pointer; margin-bottom: 24px;
+      display: flex; align-items: center; justify-content: center; gap: 8px; transition: opacity .2s;
     }
     .guide-btn:hover { opacity: 0.85; }
     .form-group { margin-bottom: 14px; }
     .form-group label { display: block; font-size: 0.85rem; color: var(--muted); margin-bottom: 6px; font-weight: 500; }
     .form-hint { font-size: 0.75rem; color: var(--muted); margin-top: 4px; }
 
-    /* ── Dashboard ── */
     #dashboard { display: none; }
     #dashboard.active { display: block; }
 
-    /* ── Status Row ── */
     .status-row { display: flex; align-items: center; gap: 8px; font-size: 0.75rem; color: var(--muted); margin-top: 4px; }
     .status-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--muted); }
     .status-dot.ok  { background: var(--profit); }
     .status-dot.err { background: var(--loss); }
 
-    /* ── Loading / Error ── */
     .loading { text-align: center; color: var(--muted); padding: 20px; font-size: 0.9rem; }
     .spinner {
       display: inline-block; width: 18px; height: 18px;
       border: 2px solid var(--border); border-top-color: var(--accent);
-      border-radius: 50%; animation: spin .8s linear infinite;
-      margin-right: 6px; vertical-align: middle;
+      border-radius: 50%; animation: spin .8s linear infinite; margin-right: 6px; vertical-align: middle;
     }
     @keyframes spin { to { transform: rotate(360deg); } }
     .error-msg {
@@ -210,52 +189,39 @@
       border-radius: 10px; padding: 12px 14px; color: var(--loss); font-size: 0.85rem;
     }
 
-    /* ── Toast ── */
     #toast {
       position: fixed; bottom: 24px; left: 50%;
       transform: translateX(-50%) translateY(80px);
       background: var(--card2); color: var(--text);
       padding: 12px 20px; border-radius: 12px; font-size: 0.85rem;
-      box-shadow: 0 8px 32px rgba(0,0,0,.4);
-      transition: transform .3s; z-index: 1000;
+      box-shadow: 0 8px 32px rgba(0,0,0,.4); transition: transform .3s; z-index: 1000;
       border: 1px solid var(--border); white-space: nowrap;
     }
     #toast.show { transform: translateX(-50%) translateY(0); }
 
-    /* ── Modals ── */
     .modal-overlay {
       position: fixed; inset: 0; background: rgba(0,0,0,.7);
-      z-index: 500; display: none; align-items: flex-end;
-      justify-content: center; backdrop-filter: blur(2px);
+      z-index: 500; display: none; align-items: flex-end; justify-content: center; backdrop-filter: blur(2px);
     }
     .modal-overlay.active { display: flex; }
     .modal {
       background: var(--card); border-radius: 20px 20px 0 0;
       padding: 24px 20px; width: 100%; max-width: 480px;
-      max-height: 90vh; overflow-y: auto;
-      border: 1px solid var(--border); border-bottom: none;
+      max-height: 90vh; overflow-y: auto; border: 1px solid var(--border); border-bottom: none;
     }
     .modal-handle { width: 40px; height: 4px; background: var(--border); border-radius: 2px; margin: 0 auto 20px; }
     .modal-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 16px; }
     .modal-body { display: flex; flex-direction: column; gap: 14px; }
 
-    /* ── Guide Steps ── */
-    .step {
-      background: var(--card2); border-radius: 12px;
-      padding: 14px; border-left: 3px solid var(--accent);
-    }
+    .step { background: var(--card2); border-radius: 12px; padding: 14px; border-left: 3px solid var(--accent); }
     .step-label { font-size: 0.7rem; color: var(--accent); font-weight: 700; margin-bottom: 6px; letter-spacing: .5px; }
     .step-content { font-size: 0.88rem; line-height: 1.6; }
     .step-url-btn {
       display: inline-flex; align-items: center; gap: 6px;
       margin-top: 8px; padding: 6px 12px; background: var(--accent);
-      color: #fff; border-radius: 8px; font-size: 0.8rem; font-weight: 600;
-      cursor: pointer; border: none; text-decoration: none;
+      color: #fff; border-radius: 8px; font-size: 0.8rem; font-weight: 600; cursor: pointer; border: none;
     }
-    .warning-box {
-      background: rgba(248,113,113,.1); border: 1px solid rgba(248,113,113,.3);
-      border-radius: 12px; padding: 14px;
-    }
+    .warning-box { background: rgba(248,113,113,.1); border: 1px solid rgba(248,113,113,.3); border-radius: 12px; padding: 14px; }
     .warning-box p { color: var(--loss); font-size: 0.82rem; line-height: 1.7; }
     .warning-box p::before { content: '⚠️ '; }
   </style>
@@ -266,9 +232,7 @@
 <div id="settings-screen">
   <div class="settings-title">💰 재테크 대시보드</div>
   <div class="settings-subtitle">한국투자증권 API 키를 입력해 내 포트폴리오를 자동으로 불러옵니다.</div>
-
   <button class="guide-btn" onclick="Settings.showGuide()">📖 한투 API 발급 방법 안내</button>
-
   <div class="form-group">
     <label>앱키 (App Key)</label>
     <input type="password" id="input-appkey" placeholder="PSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" autocomplete="off">
@@ -289,11 +253,8 @@
       <option value="22">22 – 개인연금 / ISA</option>
     </select>
   </div>
-  <button class="btn btn-primary btn-full" style="margin-top:8px" onclick="Settings.save()">
-    저장하고 대시보드로 이동 →
-  </button>
+  <button class="btn btn-primary btn-full" style="margin-top:8px" onclick="Settings.save()">저장하고 대시보드로 이동 →</button>
 </div>
-
 
 <!-- ══════════════ MAIN DASHBOARD ══════════════ -->
 <div id="dashboard">
@@ -312,14 +273,28 @@
     </div>
   </div>
 
+  <!-- Total Assets Summary -->
+  <div class="total-assets-card">
+    <div class="total-assets-label">💼 전체 자산 합계</div>
+    <div class="total-assets-value" id="total-assets-value">-</div>
+    <div class="total-assets-breakdown">
+      <div class="total-assets-chip">
+        <div class="total-assets-chip-label">ETF</div>
+        <div class="total-assets-chip-value" id="total-etf-value">-</div>
+      </div>
+      <div class="total-assets-chip">
+        <div class="total-assets-chip-label">수동 자산</div>
+        <div class="total-assets-chip-value" id="total-manual-value">-</div>
+      </div>
+    </div>
+  </div>
+
   <!-- ETF Portfolio -->
   <div class="card">
     <div class="card-header">
       <h2>📊 ETF 포트폴리오 <span class="badge badge-auto">자동</span></h2>
     </div>
-    <div id="portfolio-content">
-      <div class="loading"><span class="spinner"></span>잔고 조회 중...</div>
-    </div>
+    <div id="portfolio-content"><div class="loading"><span class="spinner"></span>잔고 조회 중...</div></div>
   </div>
 
   <!-- Goals -->
@@ -330,9 +305,7 @@
 
   <!-- Manual Assets -->
   <div class="card">
-    <div class="card-header">
-      <h2>🏦 수동 자산 <span class="badge badge-manual">수동</span></h2>
-    </div>
+    <div class="card-header"><h2>🏦 수동 자산 <span class="badge badge-manual">수동</span></h2></div>
     <div id="manual-assets-content"></div>
     <button class="add-asset-btn" onclick="ManualAssets.openAdd()">+ 자산 추가</button>
   </div>
@@ -340,9 +313,7 @@
   <!-- KOSPI Tracker -->
   <div class="card">
     <div class="card-header"><h2>📈 코스피 트래커</h2></div>
-    <div id="kospi-content">
-      <div class="loading"><span class="spinner"></span>코스피 조회 중...</div>
-    </div>
+    <div id="kospi-content"><div class="loading"><span class="spinner"></span>코스피 조회 중...</div></div>
   </div>
 
   <!-- Notifications -->
@@ -351,7 +322,6 @@
     <div id="notifications-content"></div>
   </div>
 </div>
-
 
 <!-- ══════════════ MODALS ══════════════ -->
 
@@ -363,46 +333,25 @@
     <div class="modal-body">
       <div class="step">
         <div class="step-label">STEP 1</div>
-        <div class="step-content">
-          <strong>KIS Developers 접속</strong><br>
-          apiportal.koreainvestment.com 에 접속하세요.
-          <br>
+        <div class="step-content"><strong>KIS Developers 접속</strong><br>apiportal.koreainvestment.com 에 접속하세요.<br>
           <button class="step-url-btn" onclick="window.open('https://apiportal.koreainvestment.com','_blank')">🔗 사이트 열기</button>
         </div>
       </div>
       <div class="step">
         <div class="step-label">STEP 2</div>
-        <div class="step-content">
-          <strong>회원가입 / 로그인</strong><br>
-          한국투자증권 계좌 보유자만 이용 가능합니다.<br>
-          기존 한투 앱 ID로 로그인하세요.
-        </div>
+        <div class="step-content"><strong>회원가입 / 로그인</strong><br>한국투자증권 계좌 보유자만 이용 가능합니다.<br>기존 한투 앱 ID로 로그인하세요.</div>
       </div>
       <div class="step">
         <div class="step-label">STEP 3</div>
-        <div class="step-content">
-          <strong>앱 신청</strong><br>
-          로그인 후 <strong>[open api 서비스 신청]</strong> 검색<br>
-          → 개인 투자 목적 선택<br>
-          → <strong>실전투자</strong> 신청 (모의투자 ❌)
-        </div>
+        <div class="step-content"><strong>앱 신청</strong><br>로그인 후 <strong>[open api 서비스 신청]</strong> 검색<br>→ 개인 투자 목적 선택<br>→ <strong>실전투자</strong> 신청 (모의투자 ❌)</div>
       </div>
       <div class="step">
         <div class="step-label">STEP 4</div>
-        <div class="step-content">
-          <strong>앱키 / 앱시크릿 발급</strong><br>
-          신청 완료 후 <strong>[신청현황]</strong>에서 확인<br>
-          → 앱키(App Key)와 앱시크릿(App Secret)을 복사하세요.
-        </div>
+        <div class="step-content"><strong>앱키 / 앱시크릿 발급</strong><br>신청 완료 후 <strong>[신청현황]</strong>에서 확인<br>→ 앱키(App Key)와 앱시크릿(App Secret)을 복사하세요.</div>
       </div>
       <div class="step">
         <div class="step-label">STEP 5</div>
-        <div class="step-content">
-          <strong>계좌번호 확인</strong><br>
-          한투 앱 또는 HTS에서 계좌번호 확인<br>
-          → 앞 8자리만 입력<br>
-          → ISA·개인연금 계좌면 상품코드 <strong>22</strong> 선택
-        </div>
+        <div class="step-content"><strong>계좌번호 확인</strong><br>한투 앱 또는 HTS에서 계좌번호 확인<br>→ 앞 8자리만 입력<br>→ ISA·개인연금 계좌면 상품코드 <strong>22</strong> 선택</div>
       </div>
       <div class="warning-box">
         <p>앱키와 앱시크릿은 절대 타인에게 공유하지 마세요.</p>
@@ -456,7 +405,7 @@
         <label>알림 종류</label>
         <select id="alert-type-select" onchange="Notifications.onTypeChange()">
           <option value="earnings">📅 실적 발표일 알림</option>
-          <option value="kospi">📈 코스피 목표가 알림</option>
+          <option value="stock">📈 종목 목표가 알림</option>
         </select>
       </div>
       <div id="alert-earnings-fields">
@@ -469,10 +418,20 @@
           <input type="date" id="alert-date">
         </div>
       </div>
-      <div id="alert-kospi-fields" style="display:none">
+      <div id="alert-stock-fields" style="display:none">
         <div class="form-group">
-          <label>코스피 목표가</label>
-          <input type="number" id="alert-kospi-target" placeholder="예: 3000" inputmode="numeric">
+          <label>종목코드 (6자리)</label>
+          <input type="text" id="alert-stock-code" placeholder="예: 005930" maxlength="6" inputmode="numeric">
+          <div class="form-hint">삼성전자 005930 · SK하이닉스 000660 · 카카오 035720 · NAVER 035420</div>
+        </div>
+        <div class="form-group">
+          <label>종목명 (표시용)</label>
+          <input type="text" id="alert-stock-name" placeholder="예: 삼성전자">
+        </div>
+        <div class="form-group">
+          <label>목표가 (원)</label>
+          <input type="number" id="alert-stock-target" placeholder="예: 80000" inputmode="numeric">
+          <div class="form-hint">앱 접속 시 현재가와 비교해 목표가 도달 시 알림을 보냅니다.</div>
         </div>
       </div>
       <div style="display:flex;gap:8px">
@@ -485,42 +444,24 @@
 
 <div id="toast"></div>
 
-
 <script>
 'use strict';
 
-/* ──────────────────────────────────────────
-   Config — app-wide constants
-────────────────────────────────────────── */
 const Config = {
   API_URL: '/api/portfolio',
   LS: {
-    CONFIG: 'ftd_config',
-    TOKEN:  'ftd_token',
-    ASSETS: 'ftd_assets',
-    ALERTS: 'ftd_alerts',
-    KOSPI:  'ftd_kospi_target',
-    GOALS:  'ftd_goals'
+    CONFIG: 'ftd_config', TOKEN: 'ftd_token', ASSETS: 'ftd_assets',
+    ALERTS: 'ftd_alerts', KOSPI: 'ftd_kospi_target', GOALS: 'ftd_goals'
   },
-  GOAL_TARGETS: {
-    emergency: 500,
-    etf:       500,
-    joyak:     4000
-  }
+  GOAL_TARGETS: { emergency: 500, etf: 500, joyak: 4000 }
 };
 
-/* ──────────────────────────────────────────
-   Storage — localStorage helpers (never logs values)
-────────────────────────────────────────── */
 const Storage = {
   get(key)      { try { return JSON.parse(localStorage.getItem(key)); } catch { return null; } },
-  set(key, val) { try { localStorage.setItem(key, JSON.stringify(val)); } catch(e) { console.error('[Storage] write error:', e.message); } },
+  set(key, val) { try { localStorage.setItem(key, JSON.stringify(val)); } catch(e) { console.error('[Storage]', e.message); } },
   remove(key)   { localStorage.removeItem(key); }
 };
 
-/* ──────────────────────────────────────────
-   TokenManager — cache with 5-min expiry buffer
-────────────────────────────────────────── */
 const TokenManager = {
   BUFFER: 5 * 60 * 1000,
   getValid() {
@@ -533,44 +474,33 @@ const TokenManager = {
   clear() { Storage.remove(Config.LS.TOKEN); }
 };
 
-/* ──────────────────────────────────────────
-   KISApi — all calls go through /api/portfolio proxy
-────────────────────────────────────────── */
 const KISApi = {
-  async _call(action) {
+  async _call(action, extra = {}) {
     const cfg = Storage.get(Config.LS.CONFIG);
     if (!cfg) throw new Error('API 키가 설정되지 않았습니다.');
     const cached = TokenManager.getValid();
     const body = {
-      appkey: cfg.appkey,
-      appsecret: cfg.appsecret,
-      accountNo: cfg.accountNo,
-      productCode: cfg.productCode,
-      action,
+      appkey: cfg.appkey, appsecret: cfg.appsecret,
+      accountNo: cfg.accountNo, productCode: cfg.productCode,
+      action, ...extra,
       ...(cached && { cachedToken: cached.token, tokenExpiresAt: cached.expires_at })
     };
     const res = await fetch(Config.API_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(body)
+      method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body)
     });
     const data = await res.json();
     if (data.error) throw new Error(data.message || 'API 오류');
     if (data.newToken) {
       TokenManager.store(data.newToken.token, data.newToken.expires_at);
       console.log('[KISApi] New token cached');
-    } else if (action === 'token' && data.token) {
-      TokenManager.store(data.token, data.expires_at);
     }
     return data;
   },
-  getPortfolio() { console.log('[KISApi] Fetching portfolio'); return this._call('balance'); },
-  getKospiPrice() { console.log('[KISApi] Fetching KOSPI');    return this._call('kospi'); }
+  getPortfolio()         { console.log('[KISApi] Fetching portfolio');   return this._call('balance'); },
+  getKospiPrice()        { console.log('[KISApi] Fetching KOSPI');       return this._call('kospi'); },
+  getStockPrice(code)    { console.log('[KISApi] Fetching stock', code); return this._call('stockprice', { stockCode: code }); }
 };
 
-/* ──────────────────────────────────────────
-   Animation — count-up for numbers
-────────────────────────────────────────── */
 const Animation = {
   countUp(el, target, suffix = '', duration = 1400) {
     const t0 = performance.now();
@@ -584,9 +514,6 @@ const Animation = {
   }
 };
 
-/* ──────────────────────────────────────────
-   Modals / Toast
-────────────────────────────────────────── */
 const Modals = {
   open(id)  { document.getElementById(id).classList.add('active'); },
   close(id) { document.getElementById(id).classList.remove('active'); }
@@ -598,9 +525,25 @@ function showToast(msg, ms = 2500) {
   setTimeout(() => el.classList.remove('show'), ms);
 }
 
-/* ──────────────────────────────────────────
-   Settings — screen switching and API key management
-────────────────────────────────────────── */
+/* ── TotalAssets ── */
+const TotalAssets = {
+  update() {
+    ManualAssets.load();
+    const etf    = Portfolio.etfTotalAmount || 0;
+    const manual = ManualAssets.items.reduce((s, item) => s + (parseFloat(item.amount) || 0), 0);
+    const total  = etf + manual;
+
+    const totalEl  = document.getElementById('total-assets-value');
+    const etfEl    = document.getElementById('total-etf-value');
+    const manualEl = document.getElementById('total-manual-value');
+
+    if (totalEl) Animation.countUp(totalEl, total, '만원');
+    if (etfEl)    etfEl.textContent   = etf.toLocaleString()    + '만';
+    if (manualEl) manualEl.textContent = manual.toLocaleString() + '만';
+  }
+};
+
+/* ── Settings ── */
 const Settings = {
   show() {
     document.getElementById('settings-screen').classList.add('active');
@@ -623,10 +566,9 @@ const Settings = {
     if (!accountNo || accountNo.length < 6) { showToast('❌ 계좌번호를 정확히 입력해주세요.'); return; }
     const existing = Storage.get(Config.LS.CONFIG) || {};
     const cfg = {
-      appkey:      appkeyVal.startsWith('•')    ? existing.appkey    : appkeyVal,
-      appsecret:   appsecretVal.startsWith('•') ? existing.appsecret : appsecretVal,
-      accountNo,
-      productCode
+      appkey:    appkeyVal.startsWith('•')    ? existing.appkey    : appkeyVal,
+      appsecret: appsecretVal.startsWith('•') ? existing.appsecret : appsecretVal,
+      accountNo, productCode
     };
     if (!cfg.appkey || !cfg.appsecret) { showToast('❌ 앱키와 앱시크릿을 입력해주세요.'); return; }
     Storage.set(Config.LS.CONFIG, cfg);
@@ -638,22 +580,17 @@ const Settings = {
   showGuide() { Modals.open('guide-modal'); }
 };
 
-/* ──────────────────────────────────────────
-   Portfolio — render ETF holdings table
-────────────────────────────────────────── */
+/* ── Portfolio ── */
 const Portfolio = {
   etfTotalAmount: 0,
-
   render(data) {
     const el = document.getElementById('portfolio-content');
     try {
       const items   = data?.balance?.output1 || [];
       const summary = data?.balance?.output2?.[0] || {};
-      if (items.length === 0) {
+      if (!items.length) {
         el.innerHTML = '<div class="loading">보유 종목이 없습니다.</div>';
-        this.etfTotalAmount = 0;
-        Goals.render(0);
-        return;
+        this.etfTotalAmount = 0; Goals.render(0); TotalAssets.update(); return;
       }
       const totalEval = parseFloat(summary.tot_evlu_amt || 0);
       const totalPct  = parseFloat(summary.asst_icdc_erng_rt || 0);
@@ -673,65 +610,52 @@ const Portfolio = {
         </tr>`;
       }).join('');
 
-      const pctCls  = totalPct >= 0 ? 'profit' : 'loss';
-      const pctSign = totalPct >= 0 ? '+' : '';
+      const pctCls = totalPct >= 0 ? 'profit' : 'loss';
+      const sign   = totalPct >= 0 ? '+' : '';
       el.innerHTML = `
         <div class="summary-row">
-          <div class="summary-chip">
-            <div class="summary-chip-label">총 평가금액</div>
-            <div class="summary-chip-value" id="anim-total">${Math.round(totalEval/10000).toLocaleString()}만원</div>
-          </div>
-          <div class="summary-chip">
-            <div class="summary-chip-label">총 수익률</div>
-            <div class="summary-chip-value ${pctCls}">${pctSign}${totalPct.toFixed(2)}%</div>
-          </div>
+          <div class="summary-chip"><div class="summary-chip-label">총 평가금액</div>
+            <div class="summary-chip-value" id="anim-total">${Math.round(totalEval/10000).toLocaleString()}만원</div></div>
+          <div class="summary-chip"><div class="summary-chip-label">총 수익률</div>
+            <div class="summary-chip-value ${pctCls}">${sign}${totalPct.toFixed(2)}%</div></div>
         </div>
         <table class="portfolio-table">
           <thead><tr><th>종목</th><th>평가금액</th><th>수익률</th></tr></thead>
           <tbody>${rows}</tbody>
           <tbody><tr class="total-row">
-            <td>합계</td>
-            <td>${Math.round(totalEval/10000).toLocaleString()}만</td>
-            <td class="${pctCls}">${pctSign}${totalPct.toFixed(2)}%</td>
+            <td>합계</td><td>${Math.round(totalEval/10000).toLocaleString()}만</td>
+            <td class="${pctCls}">${sign}${totalPct.toFixed(2)}%</td>
           </tr></tbody>
         </table>`;
 
       const animEl = document.getElementById('anim-total');
       if (animEl) Animation.countUp(animEl, Math.round(totalEval/10000), '만원');
       Goals.render(this.etfTotalAmount);
+      TotalAssets.update();
     } catch(e) {
-      console.error('[Portfolio] render error:', e);
+      console.error('[Portfolio]', e);
       el.innerHTML = `<div class="error-msg">렌더 오류: ${e.message}</div>`;
     }
   },
-
   renderError(msg) {
-    document.getElementById('portfolio-content').innerHTML =
-      `<div class="error-msg">⚠️ ${msg}</div>`;
+    document.getElementById('portfolio-content').innerHTML = `<div class="error-msg">⚠️ ${msg}</div>`;
     Goals.render(0);
+    TotalAssets.update();
   }
 };
 
-/* ──────────────────────────────────────────
-   Goals — progress bars for financial targets
-────────────────────────────────────────── */
+/* ── Goals ── */
 const Goals = {
   amounts: {},
-  load()   { this.amounts = Storage.get(Config.LS.GOALS) || {}; },
-  persist(){ Storage.set(Config.LS.GOALS, this.amounts); },
-
-  color(pct) {
-    if (pct >= 66) return '#4ade80';
-    if (pct >= 33) return '#fbbf24';
-    return '#f87171';
-  },
-
+  load()    { this.amounts = Storage.get(Config.LS.GOALS) || {}; },
+  persist() { Storage.set(Config.LS.GOALS, this.amounts); },
+  color(pct) { return pct >= 66 ? '#4ade80' : pct >= 33 ? '#fbbf24' : '#f87171'; },
   render(etfAmt = 0) {
     this.load();
     const defs = [
-      { key: 'emergency', label: '비상금',      icon: '🛡️', auto: false },
+      { key: 'emergency', label: '비상금',     icon: '🛡️', auto: false },
       { key: 'etf',       label: '모멘텀 ETF', icon: '📈', auto: true  },
-      { key: 'joyak',    label: '도약계좌',   icon: '🚀', auto: false }
+      { key: 'joyak',     label: '도약계좌',   icon: '🚀', auto: false }
     ];
     const el = document.getElementById('goals-content');
     el.innerHTML = defs.map(g => {
@@ -741,8 +665,7 @@ const Goals = {
       const c       = this.color(pct);
       const editBtn = g.auto ? '' :
         `<button class="sm-btn" style="margin-left:8px" onclick="Goals.edit('${g.key}','${g.label}',${current})">수정</button>`;
-      return `
-        <div class="goal-item">
+      return `<div class="goal-item">
           <div class="goal-header">
             <span class="goal-label">${g.icon} ${g.label}</span>
             <span class="goal-amounts">${current.toLocaleString()} / ${target.toLocaleString()}만원</span>
@@ -756,7 +679,6 @@ const Goals = {
           </div>
         </div>`;
     }).join('');
-
     requestAnimationFrame(() => {
       defs.forEach(g => {
         const target  = Config.GOAL_TARGETS[g.key];
@@ -767,34 +689,27 @@ const Goals = {
       });
     });
   },
-
   edit(key, label, current) {
     const v = prompt(`${label} 현재 금액 (만원):`, current);
     if (v === null) return;
     const n = parseFloat(v);
     if (isNaN(n) || n < 0) { showToast('올바른 금액을 입력하세요.'); return; }
-    this.load();
-    this.amounts[key] = n;
-    this.persist();
+    this.load(); this.amounts[key] = n; this.persist();
     this.render(Portfolio.etfTotalAmount);
     showToast('✅ 목표 금액이 업데이트되었습니다.');
   }
 };
 
-/* ──────────────────────────────────────────
-   ManualAssets — add / edit / delete with localStorage
-   Asset shape: { name, amount, memo, monthlyAdd, monthlyActive, lastUpdated }
-────────────────────────────────────────── */
+/* ── ManualAssets ── */
 const ManualAssets = {
   items: [],
   load()    { this.items = Storage.get(Config.LS.ASSETS) || []; },
   persist() { Storage.set(Config.LS.ASSETS, this.items); },
 
-  /* Apply monthlyAdd once per calendar month on app start */
   checkMonthly() {
     this.load();
     const now = new Date();
-    const currentMonth = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+    const currentMonth = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`;
     let changed = false;
     this.items.forEach(item => {
       const add = parseFloat(item.monthlyAdd) || 0;
@@ -804,10 +719,7 @@ const ManualAssets = {
         changed = true;
       }
     });
-    if (changed) {
-      this.persist();
-      console.log('[ManualAssets] Monthly auto-update applied');
-    }
+    if (changed) { this.persist(); console.log('[ManualAssets] Monthly auto-update applied'); }
   },
 
   togglePause(i) {
@@ -825,7 +737,7 @@ const ManualAssets = {
     const el = document.getElementById('manual-assets-content');
     if (!this.items.length) {
       el.innerHTML = '<div class="loading" style="padding:8px 0">수동 자산을 추가해보세요.</div>';
-      return;
+      TotalAssets.update(); return;
     }
     el.innerHTML = `<div class="asset-list">${this.items.map((item, i) => {
       const monthlyAdd = parseFloat(item.monthlyAdd) || 0;
@@ -833,17 +745,13 @@ const ManualAssets = {
       const monthlyRow = monthlyAdd > 0 ? `
         <div class="asset-monthly-row">
           <span class="asset-monthly ${isPaused ? 'paused' : ''}">
-            ${isPaused
-              ? `+${monthlyAdd.toLocaleString()}만/월 (중단됨)`
-              : `+${monthlyAdd.toLocaleString()}만/월 자동 추가`}
+            ${isPaused ? `+${monthlyAdd.toLocaleString()}만/월 (중단됨)` : `+${monthlyAdd.toLocaleString()}만/월 자동 추가`}
           </span>
-          <button class="sm-btn ${isPaused ? 'resume' : 'pause'}"
-            onclick="ManualAssets.togglePause(${i})">
+          <button class="sm-btn ${isPaused ? 'resume' : 'pause'}" onclick="ManualAssets.togglePause(${i})">
             ${isPaused ? '다시 재개' : '잠시 중단'}
           </button>
         </div>` : '';
-      return `
-        <div class="asset-item">
+      return `<div class="asset-item">
           <div class="asset-item-row">
             <div class="asset-info">
               <div class="asset-name">${item.name}</div>
@@ -854,23 +762,23 @@ const ManualAssets = {
               <button class="sm-btn" onclick="ManualAssets.openEdit(${i})">수정</button>
               <button class="sm-btn del" onclick="ManualAssets.del(${i})">삭제</button>
             </div>
-          </div>
-          ${monthlyRow}
+          </div>${monthlyRow}
         </div>`;
     }).join('')}</div>`;
+    TotalAssets.update();
   },
 
   _openModal(title, i, item) {
-    document.getElementById('asset-modal-title').textContent  = title;
-    document.getElementById('asset-edit-id').value           = i !== null ? i : '';
-    document.getElementById('asset-name-input').value        = item?.name       || '';
-    document.getElementById('asset-amount-input').value      = item?.amount     || '';
-    document.getElementById('asset-memo-input').value        = item?.memo       || '';
-    document.getElementById('asset-monthly-input').value     = item?.monthlyAdd > 0 ? item.monthlyAdd : '';
+    document.getElementById('asset-modal-title').textContent = title;
+    document.getElementById('asset-edit-id').value          = i !== null ? i : '';
+    document.getElementById('asset-name-input').value       = item?.name       || '';
+    document.getElementById('asset-amount-input').value     = item?.amount     || '';
+    document.getElementById('asset-memo-input').value       = item?.memo       || '';
+    document.getElementById('asset-monthly-input').value    = item?.monthlyAdd > 0 ? item.monthlyAdd : '';
     Modals.open('asset-modal');
   },
-  openAdd()    { this._openModal('자산 추가', null, null); },
-  openEdit(i)  { this.load(); this._openModal('자산 수정', i, this.items[i]); },
+  openAdd()   { this._openModal('자산 추가', null, null); },
+  openEdit(i) { this.load(); this._openModal('자산 수정', i, this.items[i]); },
 
   save() {
     const name       = document.getElementById('asset-name-input').value.trim();
@@ -879,18 +787,13 @@ const ManualAssets = {
     const monthlyAdd = parseFloat(document.getElementById('asset-monthly-input').value) || 0;
     const idxStr     = document.getElementById('asset-edit-id').value;
     if (!name)               { showToast('항목명을 입력해주세요.'); return; }
-    if (isNaN(amount) || amount < 0) { showToast('올바른 금액을 입력해주세요.'); return; }
+    if (isNaN(amount)||amount<0) { showToast('올바른 금액을 입력해주세요.'); return; }
     this.load();
     if (idxStr === '') {
       this.items.push({ name, amount, memo, monthlyAdd, monthlyActive: true, lastUpdated: null });
     } else {
-      const idx      = parseInt(idxStr);
-      const existing = this.items[idx];
-      this.items[idx] = {
-        name, amount, memo, monthlyAdd,
-        monthlyActive: existing.monthlyActive !== false,
-        lastUpdated:   existing.lastUpdated || null
-      };
+      const idx = parseInt(idxStr), existing = this.items[idx];
+      this.items[idx] = { name, amount, memo, monthlyAdd, monthlyActive: existing.monthlyActive !== false, lastUpdated: existing.lastUpdated || null };
     }
     this.persist();
     Modals.close('asset-modal');
@@ -900,53 +803,38 @@ const ManualAssets = {
 
   del(i) {
     if (!confirm('이 자산을 삭제할까요?')) return;
-    this.load();
-    this.items.splice(i, 1);
-    this.persist();
-    this.render();
-    showToast('삭제되었습니다.');
+    this.load(); this.items.splice(i, 1); this.persist(); this.render(); showToast('삭제되었습니다.');
   }
 };
 
-/* ──────────────────────────────────────────
-   KospiTracker — price display and goal check
-────────────────────────────────────────── */
+/* ── KospiTracker ── */
 const KospiTracker = {
   currentPrice: 0,
-
   render(data, error) {
     const el          = document.getElementById('kospi-content');
     const targetPrice = parseFloat(Storage.get(Config.LS.KOSPI) || 0);
-
     if (error || !data?.kospi?.output) {
       el.innerHTML = `<div class="error-msg">⚠️ 코스피 조회 실패: ${error || '데이터 없음'}</div>${this._targetHtml(targetPrice, 0)}`;
       return;
     }
-
     const out    = data.kospi.output;
-    const price  = parseFloat(out.bstp_nmix_prpr  || out.stck_prpr || 0);
+    const price  = parseFloat(out.bstp_nmix_prpr || out.stck_prpr || 0);
     const change = parseFloat(out.bstp_nmix_prdy_vrss || 0);
     const pct    = parseFloat(out.bstp_nmix_prdy_ctrt || 0);
     this.currentPrice = price;
-
     const cls  = change >= 0 ? 'profit' : 'loss';
     const sign = change >= 0 ? '+' : '';
     el.innerHTML = `
       <div class="kospi-display">
         <div class="kospi-price" id="anim-kospi">${price.toLocaleString('ko-KR',{maximumFractionDigits:2})}</div>
         <div class="kospi-change ${cls}">${sign}${change.toFixed(2)} (${sign}${pct.toFixed(2)}%)</div>
-      </div>
-      ${this._targetHtml(targetPrice, price)}`;
-
+      </div>${this._targetHtml(targetPrice, price)}`;
     const animEl = document.getElementById('anim-kospi');
     if (animEl) Animation.countUp(animEl, Math.round(price), '');
-
     if (targetPrice > 0 && price >= targetPrice)
       Notifications.notify('코스피 목표가 달성! 🎉', `현재가 ${price.toLocaleString()} ≥ 목표가 ${targetPrice.toLocaleString()}`);
-
     this._animProgress(targetPrice, price);
   },
-
   _targetHtml(target, price) {
     const pct     = target > 0 ? Math.min(Math.round(price / target * 100), 200) : 0;
     const reached = price > 0 && target > 0 && price >= target;
@@ -966,29 +854,18 @@ const KospiTracker = {
           달성률 ${pct}% ${reached ? '— 목표 도달! 🎉' : ''}
         </div>` : ''}`;
   },
-
   setTarget(val) {
     const n = parseFloat(val);
-    if (!isNaN(n) && n > 0) {
-      Storage.set(Config.LS.KOSPI, n);
-      this._animProgress(n, this.currentPrice);
-      showToast(`목표가 ${n.toLocaleString()}으로 설정되었습니다.`);
-    }
+    if (!isNaN(n) && n > 0) { Storage.set(Config.LS.KOSPI, n); this._animProgress(n, this.currentPrice); showToast(`목표가 ${n.toLocaleString()}으로 설정되었습니다.`); }
   },
-
   _animProgress(target, price) {
     if (!target || !price) return;
-    const pct  = Math.min(Math.round(price / target * 100), 100);
-    setTimeout(() => {
-      const fill = document.getElementById('kospi-prog');
-      if (fill) fill.style.width = pct + '%';
-    }, 150);
+    const pct = Math.min(Math.round(price / target * 100), 100);
+    setTimeout(() => { const fill = document.getElementById('kospi-prog'); if (fill) fill.style.width = pct + '%'; }, 150);
   }
 };
 
-/* ──────────────────────────────────────────
-   Notifications — browser push alerts
-────────────────────────────────────────── */
+/* ── Notifications ── */
 const Notifications = {
   alerts: [],
   load()    { this.alerts = Storage.get(Config.LS.ALERTS) || []; },
@@ -1003,7 +880,7 @@ const Notifications = {
   notify(title, body) {
     if (Notification.permission !== 'granted') return;
     try { new Notification(title, { body, icon: '💰' }); }
-    catch(e) { console.warn('[Notifications] push failed:', e.message); }
+    catch(e) { console.warn('[Notifications]', e.message); }
   },
 
   render() {
@@ -1016,22 +893,26 @@ const Notifications = {
          </div>` : '';
     const listHtml = !this.alerts.length
       ? '<div class="loading" style="padding:8px 0">등록된 알림이 없습니다.</div>'
-      : `<div class="alert-list">${this.alerts.map((a, i) => `
-          <div class="alert-item">
-            <div>${a.type === 'earnings'
-              ? `📅 <strong>${a.symbol}</strong> 실적 발표 <span class="alert-tag earnings">${a.date}</span>`
-              : `📈 코스피 <strong>${parseInt(a.target).toLocaleString()}</strong> 도달 시 <span class="alert-tag kospi-alert">목표가</span>`
-            }</div>
-            <button class="sm-btn del" onclick="Notifications.del(${i})">삭제</button>
-          </div>`).join('')}</div>`;
+      : `<div class="alert-list">${this.alerts.map((a, i) => {
+          let content;
+          if (a.type === 'earnings') {
+            content = `📅 <strong>${a.symbol}</strong> 실적 발표 <span class="alert-tag earnings">${a.date}</span>`;
+          } else if (a.type === 'stock') {
+            content = `📈 <strong>${a.stockName || a.stockCode}</strong>(${a.stockCode}) <span class="alert-tag stock-alert">${parseInt(a.targetPrice).toLocaleString()}원 도달 시</span>`;
+          } else {
+            content = `알 수 없는 알림`;
+          }
+          return `<div class="alert-item"><div>${content}</div>
+            <button class="sm-btn del" onclick="Notifications.del(${i})">삭제</button></div>`;
+        }).join('')}</div>`;
     el.innerHTML = permHtml + listHtml +
-      '<button class="add-asset-btn" style="margin-top:10px" onclick="Modals.open(\'alert-modal\')">+ 알림 추가</button>';
+      `<button class="add-asset-btn" style="margin-top:10px" onclick="Modals.open('alert-modal')">+ 알림 추가</button>`;
   },
 
   onTypeChange() {
     const t = document.getElementById('alert-type-select').value;
     document.getElementById('alert-earnings-fields').style.display = t === 'earnings' ? '' : 'none';
-    document.getElementById('alert-kospi-fields').style.display   = t === 'kospi'    ? '' : 'none';
+    document.getElementById('alert-stock-fields').style.display    = t === 'stock'    ? '' : 'none';
   },
 
   saveAlert() {
@@ -1042,10 +923,13 @@ const Notifications = {
       const date   = document.getElementById('alert-date').value;
       if (!symbol || !date) { showToast('종목명과 날짜를 입력해주세요.'); return; }
       this.alerts.push({ type: 'earnings', symbol, date });
-    } else {
-      const target = parseFloat(document.getElementById('alert-kospi-target').value);
-      if (isNaN(target) || target <= 0) { showToast('올바른 목표가를 입력해주세요.'); return; }
-      this.alerts.push({ type: 'kospi', target });
+    } else if (type === 'stock') {
+      const stockCode   = document.getElementById('alert-stock-code').value.trim();
+      const stockName   = document.getElementById('alert-stock-name').value.trim();
+      const targetPrice = parseFloat(document.getElementById('alert-stock-target').value);
+      if (!stockCode || stockCode.length !== 6) { showToast('6자리 종목코드를 입력해주세요.'); return; }
+      if (isNaN(targetPrice) || targetPrice <= 0) { showToast('올바른 목표가를 입력해주세요.'); return; }
+      this.alerts.push({ type: 'stock', stockCode, stockName: stockName || stockCode, targetPrice });
     }
     this.persist();
     Modals.close('alert-modal');
@@ -1054,11 +938,7 @@ const Notifications = {
   },
 
   del(i) {
-    this.load();
-    this.alerts.splice(i, 1);
-    this.persist();
-    this.render();
-    showToast('알림이 삭제되었습니다.');
+    this.load(); this.alerts.splice(i, 1); this.persist(); this.render(); showToast('알림이 삭제되었습니다.');
   },
 
   checkToday(kospiPrice) {
@@ -1067,15 +947,29 @@ const Notifications = {
     this.alerts.forEach(a => {
       if (a.type === 'earnings' && a.date === today)
         this.notify(`📅 ${a.symbol} 실적 발표일`, '오늘 실적이 발표됩니다. 확인해보세요!');
-      if (a.type === 'kospi' && kospiPrice > 0 && kospiPrice >= a.target)
-        this.notify('📈 코스피 목표가 도달!', `현재 ${kospiPrice.toLocaleString()} ≥ 목표 ${parseInt(a.target).toLocaleString()}`);
     });
+  },
+
+  async checkStockAlerts() {
+    this.load();
+    const stockAlerts = this.alerts.filter(a => a.type === 'stock');
+    if (!stockAlerts.length) return;
+    await Promise.allSettled(stockAlerts.map(async alert => {
+      try {
+        const data  = await KISApi.getStockPrice(alert.stockCode);
+        const price = parseFloat(data?.stockprice?.output?.stck_prpr || 0);
+        if (price > 0 && price >= alert.targetPrice) {
+          this.notify(
+            `📈 ${alert.stockName} 목표가 도달!`,
+            `현재 ${price.toLocaleString()}원 ≥ 목표 ${parseInt(alert.targetPrice).toLocaleString()}원`
+          );
+        }
+      } catch(e) { console.warn('[Notifications] Stock check failed:', e.message); }
+    }));
   }
 };
 
-/* ──────────────────────────────────────────
-   App — initialization and orchestration
-────────────────────────────────────────── */
+/* ── App ── */
 const App = {
   async init() {
     console.log('[App] Starting finance dashboard');
@@ -1111,7 +1005,9 @@ const App = {
     const kospiData = kospiRes.status === 'fulfilled' ? kospiRes.value : null;
     if (kospiErr) console.error('[App] KOSPI error:', kospiErr);
     KospiTracker.render(kospiData, kospiErr);
+
     Notifications.checkToday(KospiTracker.currentPrice);
+    await Notifications.checkStockAlerts();
   },
 
   _setStatus(state, msg) {
@@ -1119,16 +1015,9 @@ const App = {
     const text = document.getElementById('api-status-text');
     if (!dot || !text) return;
     const now = new Date().toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' });
-    if (state === 'loading') {
-      dot.className = 'status-dot';
-      text.textContent = '불러오는 중...';
-    } else if (state === 'ok') {
-      dot.className = 'status-dot ok';
-      text.textContent = `${msg} · ${now}`;
-    } else {
-      dot.className = 'status-dot err';
-      text.textContent = `${msg} · ${now}`;
-    }
+    if (state === 'loading') { dot.className = 'status-dot'; text.textContent = '불러오는 중...'; }
+    else if (state === 'ok') { dot.className = 'status-dot ok'; text.textContent = `${msg} · ${now}`; }
+    else { dot.className = 'status-dot err'; text.textContent = `${msg} · ${now}`; }
   }
 };
 
