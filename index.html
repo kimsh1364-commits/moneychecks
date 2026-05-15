@@ -429,7 +429,7 @@ const TokenManager = {
   getValid() {
     const c = Storage.get(Config.LS.TOKEN);
     if (c && Date.now() < c.expires_at - this.BUFFER) return c;
-    if (c) { Storage.remove(Config.LS.TOKEN); }
+    if (c) Storage.remove(Config.LS.TOKEN);
     return null;
   },
   store(token, expires_at) { Storage.set(Config.LS.TOKEN, { token, expires_at }); },
@@ -452,14 +452,17 @@ const KISApi = {
     });
     const data = await res.json();
     if (data.error) throw new Error(data.message || 'API 오류');
-    if (data.newToken) {
-      TokenManager.store(data.newToken.token, data.newToken.expires_at);
-    }
+    if (data.newToken) TokenManager.store(data.newToken.token, data.newToken.expires_at);
     return data;
   },
+  // 토큰 하나를 먼저 발급해 캐시한 뒤 병렬 호출에서 재사용
   async ensureToken() {
     if (TokenManager.getValid()) return;
-    await this._call('token');
+    // 'token' 액션은 { token, expires_at } 형식으로 응답함
+    const data = await this._call('token');
+    if (data.token && data.expires_at) {
+      TokenManager.store(data.token, data.expires_at);
+    }
   },
   getPortfolio()      { return this._call('balance'); },
   getKospiPrice()     { return this._call('kospi'); },
@@ -504,20 +507,13 @@ const TotalAssets = {
     if (manualEl) manualEl.textContent = manual.toLocaleString() + '만';
     return total;
   },
-  // 10만원 이상 오를 때마다 축하 알림
   checkMilestone(total) {
     if (total <= 0) return;
     const prev = parseFloat(Storage.get(Config.LS.TOTAL_MILESTONE) || 0);
-    if (prev === 0) {
-      Storage.set(Config.LS.TOTAL_MILESTONE, total);
-      return;
-    }
+    if (prev === 0) { Storage.set(Config.LS.TOTAL_MILESTONE, total); return; }
     if (total - prev >= 10) {
       const diff = Math.floor(total - prev);
-      Notifications.notify(
-        '🎉 자산 증가 축하해요!',
-        `전체 자산 ${total.toLocaleString()}만원 달성! (+${diff.toLocaleString()}만원)`
-      );
+      Notifications.notify('🎉 자산 증가 축하해요!', `전체 자산 ${total.toLocaleString()}만원 달성! (+${diff.toLocaleString()}만원)`);
       Storage.set(Config.LS.TOTAL_MILESTONE, total);
     }
   }
@@ -671,7 +667,6 @@ const ManualAssets = {
   checkMonthly() {
     this.load();
     const now = new Date();
-    // 매월 10일 이후에만 자동 추가
     if (now.getDate() < 10) return;
     const currentMonth = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`;
     let changed = false;
@@ -925,7 +920,7 @@ const App = {
     Goals.render(Portfolio.etfTotalAmount);
     Notifications.render();
 
-    try { await KISApi.ensureToken(); } catch(e) { /* each call handles its own error */ }
+    try { await KISApi.ensureToken(); } catch(e) { /* 에러는 각 호출에서 직접 처리 */ }
 
     const [portfolioRes, kospiRes] = await Promise.allSettled([
       KISApi.getPortfolio(),
@@ -944,7 +939,6 @@ const App = {
     const kospiData = kospiRes.status === 'fulfilled' ? kospiRes.value : null;
     KospiTracker.render(kospiData, kospiErr);
 
-    // 전체 자산 합산 후 이전 대비 +10만원 이상이면 축하 알림
     ManualAssets.load();
     const total = (Portfolio.etfTotalAmount || 0) +
       ManualAssets.items.reduce((s, i) => s + (parseFloat(i.amount) || 0), 0);
