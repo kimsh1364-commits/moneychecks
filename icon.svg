@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="bg3" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1e1454"/>
+      <stop offset="60%" stop-color="#2e1d82"/>
+      <stop offset="100%" stop-color="#4c1d95"/>
+    </linearGradient>
+    <linearGradient id="cardGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="rgba(255,255,255,0.14)"/>
+      <stop offset="100%" stop-color="rgba(255,255,255,0.04)"/>
+    </linearGradient>
+    <linearGradient id="lineGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#a78bfa" stop-opacity="0.4"/>
+      <stop offset="50%" stop-color="#e0d7ff"/>
+      <stop offset="100%" stop-color="#c4b5fd"/>
+    </linearGradient>
+    <filter id="softglow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="6" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <clipPath id="cardClip">
+      <rect x="72" y="128" width="368" height="266" rx="41"/>
+    </clipPath>
+  </defs>
+
+  <!-- Background -->
+  <rect width="512" height="512" rx="102" fill="url(#bg3)"/>
+
+  <!-- Ambient glow blobs -->
+  <circle cx="154" cy="154" r="128" fill="#6d28d9" opacity="0.3"/>
+  <circle cx="384" cy="384" r="115" fill="#4c1d95" opacity="0.3"/>
+
+  <!-- Card surface -->
+  <rect x="72" y="128" width="368" height="266" rx="41" fill="url(#cardGrad)"/>
+  <rect x="72" y="128" width="368" height="266" rx="41" fill="none" stroke="rgba(255,255,255,0.18)" stroke-width="3"/>
+
+  <!-- Area fill under chart line -->
+  <path d="M97,326 L154,281 L218,302 L286,225 L354,184 L415,154 L415,354 L97,354 Z"
+    fill="rgba(167,139,250,0.12)" clip-path="url(#cardClip)"/>
+
+  <!-- Chart line -->
+  <polyline points="97,326 154,281 218,302 286,225 354,184 415,154"
+    stroke="url(#lineGrad)" stroke-width="7.5" fill="none"
+    stroke-linecap="round" stroke-linejoin="round"
+    filter="url(#softglow)"/>
+
+  <!-- Dots on chart -->
+  <circle cx="97"  cy="326" r="9"  fill="#a78bfa" opacity="0.6"/>
+  <circle cx="154" cy="281" r="9"  fill="#a78bfa" opacity="0.7"/>
+  <circle cx="218" cy="302" r="9"  fill="#a78bfa" opacity="0.7"/>
+  <circle cx="286" cy="225" r="9"  fill="#c4b5fd" opacity="0.85"/>
+  <circle cx="354" cy="184" r="9"  fill="#ddd6fe" opacity="0.9"/>
+
+  <!-- Last dot highlight -->
+  <circle cx="415" cy="154" r="14" fill="#f5f3ff" filter="url(#softglow)"/>
+  <circle cx="415" cy="154" r="6.5" fill="#7c3aed"/>
+
+  <!-- Label chips at bottom of card -->
+  <rect x="97"  cy="338" x="97"  y="338" width="77"  height="31" rx="15" fill="rgba(255,255,255,0.08)"/>
+  <text x="135" y="359" text-anchor="middle" font-family="-apple-system,Arial,sans-serif" font-size="18" fill="rgba(255,255,255,0.5)">KOSPI</text>
+
+  <rect x="195" y="338" width="82" height="31" rx="15" fill="rgba(255,255,255,0.08)"/>
+  <text x="236" y="359" text-anchor="middle" font-family="-apple-system,Arial,sans-serif" font-size="18" fill="rgba(255,255,255,0.5)">ETF</text>
+
+  <!-- ₩ badge top-left of card -->
+  <circle cx="118" cy="169" r="26" fill="rgba(255,255,255,0.12)" stroke="rgba(255,255,255,0.2)" stroke-width="2.5"/>
+  <text x="118" y="178" text-anchor="middle" font-family="-apple-system,Arial,sans-serif" font-size="26" font-weight="bold" fill="#e0d7ff">₩</text>
+
+  <!-- Sparkle top-right -->
+  <g transform="translate(390,166)" filter="url(#softglow)">
+    <line x1="0" y1="-18" x2="0"  y2="18"  stroke="#f5f3ff" stroke-width="4" stroke-linecap="round"/>
+    <line x1="-18" y1="0" x2="18" y2="0"   stroke="#f5f3ff" stroke-width="4" stroke-linecap="round"/>
+    <line x1="-12" y1="-12" x2="12" y2="12" stroke="#f5f3ff" stroke-width="2.5" stroke-linecap="round" opacity="0.6"/>
+    <line x1="12"  y1="-12" x2="-12" y2="12" stroke="#f5f3ff" stroke-width="2.5" stroke-linecap="round" opacity="0.6"/>
+  </g>
+</svg>
