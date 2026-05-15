@@ -565,7 +565,9 @@ const Portfolio = {
         this.etfTotalAmount = 0; this.kiwoometfAmount = 0; Goals.render(0); TotalAssets.update(); return;
       }
       const totalEval = parseFloat(summary.tot_evlu_amt || 0);
-      const totalPct  = parseFloat(summary.asst_icdc_erng_rt || 0);
+      const evluPfls  = parseFloat(summary.evlu_pfls_smtl_amt || 0);
+      const pchsAmt   = parseFloat(summary.pchs_amt_smtl_amt  || 0);
+      const totalPct  = pchsAmt > 0 ? (evluPfls / pchsAmt * 100) : 0;
       this.etfTotalAmount = Math.round(totalEval / 10000);
       const kiwoometfItem = items.find(i => i.pdno === Config.KIWOOM_ETF_CODE);
       this.kiwoometfAmount = kiwoometfItem ? Math.round(parseFloat(kiwoometfItem.evlu_amt || 0) / 10000) : 0;
