@@ -416,7 +416,8 @@ const Config = {
     TOTAL_MILESTONE: 'ftd_total_milestone'
   },
   GOAL_TARGETS: { emergency: 500, etf: 500, joyak: 4000, subscription: 300 },
-  KIWOOM_ETF_CODE: '0137V0'
+  KIWOOM_ETF_CODE: '0137V0',
+  AUTO_REFRESH_MS: 5 * 60 * 1000
 };
 
 const Storage = {
@@ -520,6 +521,7 @@ const Settings = {
   show() {
     document.getElementById('settings-screen').classList.add('active');
     document.getElementById('dashboard').classList.remove('active');
+    App.stopTimer();
     const cfg = Storage.get(Config.LS.CONFIG) || {};
     document.getElementById('input-appkey').value    = cfg.appkey    ? '••••••••' : '';
     document.getElementById('input-appsecret').value = cfg.appsecret ? '••••••••' : '';
@@ -548,6 +550,7 @@ const Settings = {
     showToast('✅ 설정이 저장되었습니다.');
     this.showDashboard();
     App.refresh();
+    App.startTimer();
   },
   showGuide() { Modals.open('guide-modal'); }
 };
@@ -682,7 +685,10 @@ const ManualAssets = {
         changed = true;
       }
     });
-    if (changed) this.persist();
+    if (changed) {
+      this.persist();
+      Notifications.notify('📅 이번 달 자동 추가 완료', '수동 자산 금액이 자동으로 업데이트됐어요.');
+    }
   },
   togglePause(i) {
     this.load();
@@ -911,14 +917,37 @@ const Notifications = {
 };
 
 const App = {
+  _timer: null,
+  _lastRefresh: 0,
+
+  startTimer() {
+    this.stopTimer();
+    this._timer = setInterval(() => {
+      if (document.visibilityState === 'visible') App.refresh();
+    }, Config.AUTO_REFRESH_MS);
+  },
+  stopTimer() {
+    if (this._timer) { clearInterval(this._timer); this._timer = null; }
+  },
+
   async init() {
     const cfg = Storage.get(Config.LS.CONFIG);
     if (!cfg || !cfg.appkey || !cfg.appsecret) { Settings.show(); return; }
     Settings.showDashboard();
     ManualAssets.checkMonthly();
     await this.refresh();
+    this.startTimer();
+
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'visible') {
+        const elapsed = Date.now() - this._lastRefresh;
+        if (elapsed >= Config.AUTO_REFRESH_MS) App.refresh();
+      }
+    });
   },
+
   async refresh() {
+    this._lastRefresh = Date.now();
     this._setStatus('loading');
     ManualAssets.render();
     Goals.render(Portfolio.kiwoometfAmount);
@@ -951,6 +980,7 @@ const App = {
     Notifications.checkToday();
     await Notifications.checkStockAlerts();
   },
+
   _setStatus(state, msg) {
     const dot  = document.getElementById('api-status-dot');
     const text = document.getElementById('api-status-text');
