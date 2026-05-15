@@ -4,6 +4,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
   <title>재테크 대시보드</title>
+  <link rel="icon" type="image/svg+xml" href="/icon.svg">
+  <link rel="apple-touch-icon" href="/icon.svg">
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#0f1923">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="재테크 대시보드">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
@@ -291,9 +298,7 @@
 
   <!-- ETF Portfolio -->
   <div class="card">
-    <div class="card-header">
-      <h2>📊 ETF 포트폴리오 <span class="badge badge-auto">자동</span></h2>
-    </div>
+    <div class="card-header"><h2>📊 ETF 포트폴리오 <span class="badge badge-auto">자동</span></h2></div>
     <div id="portfolio-content"><div class="loading"><span class="spinner"></span>잔고 조회 중...</div></div>
   </div>
 
@@ -331,28 +336,17 @@
     <div class="modal-handle"></div>
     <div class="modal-title">📖 한투 API 발급 방법</div>
     <div class="modal-body">
-      <div class="step">
-        <div class="step-label">STEP 1</div>
+      <div class="step"><div class="step-label">STEP 1</div>
         <div class="step-content"><strong>KIS Developers 접속</strong><br>apiportal.koreainvestment.com 에 접속하세요.<br>
-          <button class="step-url-btn" onclick="window.open('https://apiportal.koreainvestment.com','_blank')">🔗 사이트 열기</button>
-        </div>
-      </div>
-      <div class="step">
-        <div class="step-label">STEP 2</div>
-        <div class="step-content"><strong>회원가입 / 로그인</strong><br>한국투자증권 계좌 보유자만 이용 가능합니다.<br>기존 한투 앱 ID로 로그인하세요.</div>
-      </div>
-      <div class="step">
-        <div class="step-label">STEP 3</div>
-        <div class="step-content"><strong>앱 신청</strong><br>로그인 후 <strong>[open api 서비스 신청]</strong> 검색<br>→ 개인 투자 목적 선택<br>→ <strong>실전투자</strong> 신청 (모의투자 ❌)</div>
-      </div>
-      <div class="step">
-        <div class="step-label">STEP 4</div>
-        <div class="step-content"><strong>앱키 / 앱시크릿 발급</strong><br>신청 완료 후 <strong>[신청현황]</strong>에서 확인<br>→ 앱키(App Key)와 앱시크릿(App Secret)을 복사하세요.</div>
-      </div>
-      <div class="step">
-        <div class="step-label">STEP 5</div>
-        <div class="step-content"><strong>계좌번호 확인</strong><br>한투 앱 또는 HTS에서 계좌번호 확인<br>→ 앞 8자리만 입력<br>→ ISA·개인연금 계좌면 상품코드 <strong>22</strong> 선택</div>
-      </div>
+          <button class="step-url-btn" onclick="window.open('https://apiportal.koreainvestment.com','_blank')">🔗 사이트 열기</button></div></div>
+      <div class="step"><div class="step-label">STEP 2</div>
+        <div class="step-content"><strong>회원가입 / 로그인</strong><br>한국투자증권 계좌 보유자만 이용 가능합니다.<br>기존 한투 앱 ID로 로그인하세요.</div></div>
+      <div class="step"><div class="step-label">STEP 3</div>
+        <div class="step-content"><strong>앱 신청</strong><br>로그인 후 <strong>[open api 서비스 신청]</strong> 검색<br>→ 개인 투자 목적 선택<br>→ <strong>실전투자</strong> 신청 (모의투자 ❌)</div></div>
+      <div class="step"><div class="step-label">STEP 4</div>
+        <div class="step-content"><strong>앱키 / 앱시크릿 발급</strong><br>신청 완료 후 <strong>[신청현황]</strong>에서 확인<br>→ 앱키(App Key)와 앱시크릿(App Secret)을 복사하세요.</div></div>
+      <div class="step"><div class="step-label">STEP 5</div>
+        <div class="step-content"><strong>계좌번호 확인</strong><br>한투 앱 또는 HTS에서 계좌번호 확인<br>→ 앞 8자리만 입력<br>→ ISA·개인연금 계좌면 상품코드 <strong>22</strong> 선택</div></div>
       <div class="warning-box">
         <p>앱키와 앱시크릿은 절대 타인에게 공유하지 마세요.</p>
         <p>이 앱은 본인 브라우저 localStorage에만 저장됩니다.</p>
@@ -370,23 +364,15 @@
     <div class="modal-title" id="asset-modal-title">자산 추가</div>
     <div class="modal-body">
       <input type="hidden" id="asset-edit-id">
-      <div class="form-group">
-        <label>항목명</label>
-        <input type="text" id="asset-name-input" placeholder="예: 청년도약계좌, 비상금통장">
-      </div>
-      <div class="form-group">
-        <label>금액 (만원)</label>
-        <input type="number" id="asset-amount-input" placeholder="760" inputmode="decimal" min="0">
-      </div>
-      <div class="form-group">
-        <label>메모 (선택)</label>
-        <input type="text" id="asset-memo-input" placeholder="부가 설명">
-      </div>
-      <div class="form-group">
-        <label>매달 추가 금액 (만원, 선택)</label>
+      <div class="form-group"><label>항목명</label>
+        <input type="text" id="asset-name-input" placeholder="예: 청년도약계좌, 비상금통장"></div>
+      <div class="form-group"><label>금액 (만원)</label>
+        <input type="number" id="asset-amount-input" placeholder="760" inputmode="decimal" min="0"></div>
+      <div class="form-group"><label>메모 (선택)</label>
+        <input type="text" id="asset-memo-input" placeholder="부가 설명"></div>
+      <div class="form-group"><label>매달 추가 금액 (만원, 선택)</label>
         <input type="number" id="asset-monthly-input" placeholder="예: 70" inputmode="decimal" min="0">
-        <div class="form-hint">설정 시 매달 앱 첫 접속 시 자동으로 금액이 증가합니다.</div>
-      </div>
+        <div class="form-hint">설정 시 매달 앱 첫 접속 시 자동으로 금액이 증가합니다.</div></div>
       <div style="display:flex;gap:8px">
         <button class="btn btn-ghost" style="flex:1" onclick="Modals.close('asset-modal')">취소</button>
         <button class="btn btn-primary" style="flex:2" onclick="ManualAssets.save()">저장</button>
@@ -401,38 +387,26 @@
     <div class="modal-handle"></div>
     <div class="modal-title">알림 추가</div>
     <div class="modal-body">
-      <div class="form-group">
-        <label>알림 종류</label>
+      <div class="form-group"><label>알림 종류</label>
         <select id="alert-type-select" onchange="Notifications.onTypeChange()">
           <option value="earnings">📅 실적 발표일 알림</option>
           <option value="stock">📈 종목 목표가 알림</option>
-        </select>
-      </div>
+        </select></div>
       <div id="alert-earnings-fields">
-        <div class="form-group">
-          <label>종목명</label>
-          <input type="text" id="alert-symbol" placeholder="예: 삼성전자">
-        </div>
-        <div class="form-group">
-          <label>실적 발표일</label>
-          <input type="date" id="alert-date">
-        </div>
+        <div class="form-group"><label>종목명</label>
+          <input type="text" id="alert-symbol" placeholder="예: 삼성전자"></div>
+        <div class="form-group"><label>실적 발표일</label>
+          <input type="date" id="alert-date"></div>
       </div>
       <div id="alert-stock-fields" style="display:none">
-        <div class="form-group">
-          <label>종목코드 (6자리)</label>
+        <div class="form-group"><label>종목코드 (6자리)</label>
           <input type="text" id="alert-stock-code" placeholder="예: 005930" maxlength="6" inputmode="numeric">
-          <div class="form-hint">삼성전자 005930 · SK하이닉스 000660 · 카카오 035720 · NAVER 035420</div>
-        </div>
-        <div class="form-group">
-          <label>종목명 (표시용)</label>
-          <input type="text" id="alert-stock-name" placeholder="예: 삼성전자">
-        </div>
-        <div class="form-group">
-          <label>목표가 (원)</label>
+          <div class="form-hint">삼성전자 005930 · SK하이닉스 000660 · 카카오 035720 · NAVER 035420</div></div>
+        <div class="form-group"><label>종목명 (표시용)</label>
+          <input type="text" id="alert-stock-name" placeholder="예: 삼성전자"></div>
+        <div class="form-group"><label>목표가 (원)</label>
           <input type="number" id="alert-stock-target" placeholder="예: 80000" inputmode="numeric">
-          <div class="form-hint">앱 접속 시 현재가와 비교해 목표가 도달 시 알림을 보냅니다.</div>
-        </div>
+          <div class="form-hint">앱 접속 시 현재가와 비교해 목표가 도달 시 알림을 보냅니다.</div></div>
       </div>
       <div style="display:flex;gap:8px">
         <button class="btn btn-ghost" style="flex:1" onclick="Modals.close('alert-modal')">취소</button>
@@ -496,9 +470,9 @@ const KISApi = {
     }
     return data;
   },
-  getPortfolio()         { console.log('[KISApi] Fetching portfolio');   return this._call('balance'); },
-  getKospiPrice()        { console.log('[KISApi] Fetching KOSPI');       return this._call('kospi'); },
-  getStockPrice(code)    { console.log('[KISApi] Fetching stock', code); return this._call('stockprice', { stockCode: code }); }
+  getPortfolio()      { return this._call('balance'); },
+  getKospiPrice()     { return this._call('kospi'); },
+  getStockPrice(code) { return this._call('stockprice', { stockCode: code }); }
 };
 
 const Animation = {
@@ -525,25 +499,21 @@ function showToast(msg, ms = 2500) {
   setTimeout(() => el.classList.remove('show'), ms);
 }
 
-/* ── TotalAssets ── */
 const TotalAssets = {
   update() {
     ManualAssets.load();
     const etf    = Portfolio.etfTotalAmount || 0;
     const manual = ManualAssets.items.reduce((s, item) => s + (parseFloat(item.amount) || 0), 0);
     const total  = etf + manual;
-
     const totalEl  = document.getElementById('total-assets-value');
     const etfEl    = document.getElementById('total-etf-value');
     const manualEl = document.getElementById('total-manual-value');
-
     if (totalEl) Animation.countUp(totalEl, total, '만원');
-    if (etfEl)    etfEl.textContent   = etf.toLocaleString()    + '만';
+    if (etfEl)    etfEl.textContent    = etf.toLocaleString()    + '만';
     if (manualEl) manualEl.textContent = manual.toLocaleString() + '만';
   }
 };
 
-/* ── Settings ── */
 const Settings = {
   show() {
     document.getElementById('settings-screen').classList.add('active');
@@ -580,7 +550,6 @@ const Settings = {
   showGuide() { Modals.open('guide-modal'); }
 };
 
-/* ── Portfolio ── */
 const Portfolio = {
   etfTotalAmount: 0,
   render(data) {
@@ -595,7 +564,6 @@ const Portfolio = {
       const totalEval = parseFloat(summary.tot_evlu_amt || 0);
       const totalPct  = parseFloat(summary.asst_icdc_erng_rt || 0);
       this.etfTotalAmount = Math.round(totalEval / 10000);
-
       const rows = items.map(item => {
         const name  = item.prdt_name || item.pdno || '-';
         const qty   = parseInt(item.hldg_qty || 0);
@@ -603,13 +571,8 @@ const Portfolio = {
         const pct   = parseFloat(item.evlu_pfls_rt || 0);
         const cls   = pct >= 0 ? 'profit' : 'loss';
         const sign  = pct >= 0 ? '+' : '';
-        return `<tr>
-          <td><div class="stock-name">${name}</div><div class="stock-qty">${qty.toLocaleString()}주</div></td>
-          <td>${Math.round(eval_/10000).toLocaleString()}만</td>
-          <td class="${cls}">${sign}${pct.toFixed(2)}%</td>
-        </tr>`;
+        return `<tr><td><div class="stock-name">${name}</div><div class="stock-qty">${qty.toLocaleString()}주</div></td><td>${Math.round(eval_/10000).toLocaleString()}만</td><td class="${cls}">${sign}${pct.toFixed(2)}%</td></tr>`;
       }).join('');
-
       const pctCls = totalPct >= 0 ? 'profit' : 'loss';
       const sign   = totalPct >= 0 ? '+' : '';
       el.innerHTML = `
@@ -622,12 +585,8 @@ const Portfolio = {
         <table class="portfolio-table">
           <thead><tr><th>종목</th><th>평가금액</th><th>수익률</th></tr></thead>
           <tbody>${rows}</tbody>
-          <tbody><tr class="total-row">
-            <td>합계</td><td>${Math.round(totalEval/10000).toLocaleString()}만</td>
-            <td class="${pctCls}">${sign}${totalPct.toFixed(2)}%</td>
-          </tr></tbody>
+          <tbody><tr class="total-row"><td>합계</td><td>${Math.round(totalEval/10000).toLocaleString()}만</td><td class="${pctCls}">${sign}${totalPct.toFixed(2)}%</td></tr></tbody>
         </table>`;
-
       const animEl = document.getElementById('anim-total');
       if (animEl) Animation.countUp(animEl, Math.round(totalEval/10000), '만원');
       Goals.render(this.etfTotalAmount);
@@ -644,7 +603,6 @@ const Portfolio = {
   }
 };
 
-/* ── Goals ── */
 const Goals = {
   amounts: {},
   load()    { this.amounts = Storage.get(Config.LS.GOALS) || {}; },
@@ -671,13 +629,10 @@ const Goals = {
             <span class="goal-amounts">${current.toLocaleString()} / ${target.toLocaleString()}만원</span>
           </div>
           <div style="display:flex;align-items:center;gap:8px">
-            <div class="progress-track" style="flex:1">
-              <div class="progress-fill" id="prog-${g.key}" style="width:0%;background:${c}"></div>
-            </div>
+            <div class="progress-track" style="flex:1"><div class="progress-fill" id="prog-${g.key}" style="width:0%;background:${c}"></div></div>
             <span style="color:${c};font-weight:700;font-size:.85rem;width:36px;text-align:right">${pct}%</span>
             ${editBtn}
-          </div>
-        </div>`;
+          </div></div>`;
     }).join('');
     requestAnimationFrame(() => {
       defs.forEach(g => {
@@ -700,12 +655,10 @@ const Goals = {
   }
 };
 
-/* ── ManualAssets ── */
 const ManualAssets = {
   items: [],
   load()    { this.items = Storage.get(Config.LS.ASSETS) || []; },
   persist() { Storage.set(Config.LS.ASSETS, this.items); },
-
   checkMonthly() {
     this.load();
     const now = new Date();
@@ -721,7 +674,6 @@ const ManualAssets = {
     });
     if (changed) { this.persist(); console.log('[ManualAssets] Monthly auto-update applied'); }
   },
-
   togglePause(i) {
     this.load();
     const item = this.items[i];
@@ -731,7 +683,6 @@ const ManualAssets = {
     this.render();
     showToast(`매달 자동 추가를 ${state}했습니다.`);
   },
-
   render() {
     this.load();
     const el = document.getElementById('manual-assets-content');
@@ -767,7 +718,6 @@ const ManualAssets = {
     }).join('')}</div>`;
     TotalAssets.update();
   },
-
   _openModal(title, i, item) {
     document.getElementById('asset-modal-title').textContent = title;
     document.getElementById('asset-edit-id').value          = i !== null ? i : '';
@@ -779,7 +729,6 @@ const ManualAssets = {
   },
   openAdd()   { this._openModal('자산 추가', null, null); },
   openEdit(i) { this.load(); this._openModal('자산 수정', i, this.items[i]); },
-
   save() {
     const name       = document.getElementById('asset-name-input').value.trim();
     const amount     = parseFloat(document.getElementById('asset-amount-input').value);
@@ -800,18 +749,16 @@ const ManualAssets = {
     this.render();
     showToast('✅ 자산이 저장되었습니다.');
   },
-
   del(i) {
     if (!confirm('이 자산을 삭제할까요?')) return;
     this.load(); this.items.splice(i, 1); this.persist(); this.render(); showToast('삭제되었습니다.');
   }
 };
 
-/* ── KospiTracker ── */
 const KospiTracker = {
   currentPrice: 0,
   render(data, error) {
-    const el          = document.getElementById('kospi-content');
+    const el = document.getElementById('kospi-content');
     const targetPrice = parseFloat(Storage.get(Config.LS.KOSPI) || 0);
     if (error || !data?.kospi?.output) {
       el.innerHTML = `<div class="error-msg">⚠️ 코스피 조회 실패: ${error || '데이터 없음'}</div>${this._targetHtml(targetPrice, 0)}`;
@@ -865,24 +812,20 @@ const KospiTracker = {
   }
 };
 
-/* ── Notifications ── */
 const Notifications = {
   alerts: [],
   load()    { this.alerts = Storage.get(Config.LS.ALERTS) || []; },
   persist() { Storage.set(Config.LS.ALERTS, this.alerts); },
-
   async requestPermission() {
     if (!('Notification' in window)) return false;
     if (Notification.permission === 'granted') return true;
     return (await Notification.requestPermission()) === 'granted';
   },
-
   notify(title, body) {
     if (Notification.permission !== 'granted') return;
-    try { new Notification(title, { body, icon: '💰' }); }
+    try { new Notification(title, { body, icon: '/icon.svg' }); }
     catch(e) { console.warn('[Notifications]', e.message); }
   },
-
   render() {
     this.load();
     const el          = document.getElementById('notifications-content');
@@ -899,22 +842,18 @@ const Notifications = {
             content = `📅 <strong>${a.symbol}</strong> 실적 발표 <span class="alert-tag earnings">${a.date}</span>`;
           } else if (a.type === 'stock') {
             content = `📈 <strong>${a.stockName || a.stockCode}</strong>(${a.stockCode}) <span class="alert-tag stock-alert">${parseInt(a.targetPrice).toLocaleString()}원 도달 시</span>`;
-          } else {
-            content = `알 수 없는 알림`;
-          }
+          } else { content = '알 수 없는 알림'; }
           return `<div class="alert-item"><div>${content}</div>
             <button class="sm-btn del" onclick="Notifications.del(${i})">삭제</button></div>`;
         }).join('')}</div>`;
     el.innerHTML = permHtml + listHtml +
       `<button class="add-asset-btn" style="margin-top:10px" onclick="Modals.open('alert-modal')">+ 알림 추가</button>`;
   },
-
   onTypeChange() {
     const t = document.getElementById('alert-type-select').value;
     document.getElementById('alert-earnings-fields').style.display = t === 'earnings' ? '' : 'none';
     document.getElementById('alert-stock-fields').style.display    = t === 'stock'    ? '' : 'none';
   },
-
   saveAlert() {
     const type = document.getElementById('alert-type-select').value;
     this.load();
@@ -936,12 +875,10 @@ const Notifications = {
     this.render();
     showToast('✅ 알림이 등록되었습니다.');
   },
-
   del(i) {
     this.load(); this.alerts.splice(i, 1); this.persist(); this.render(); showToast('알림이 삭제되었습니다.');
   },
-
-  checkToday(kospiPrice) {
+  checkToday() {
     this.load();
     const today = new Date().toISOString().split('T')[0];
     this.alerts.forEach(a => {
@@ -949,7 +886,6 @@ const Notifications = {
         this.notify(`📅 ${a.symbol} 실적 발표일`, '오늘 실적이 발표됩니다. 확인해보세요!');
     });
   },
-
   async checkStockAlerts() {
     this.load();
     const stockAlerts = this.alerts.filter(a => a.type === 'stock');
@@ -958,30 +894,22 @@ const Notifications = {
       try {
         const data  = await KISApi.getStockPrice(alert.stockCode);
         const price = parseFloat(data?.stockprice?.output?.stck_prpr || 0);
-        if (price > 0 && price >= alert.targetPrice) {
-          this.notify(
-            `📈 ${alert.stockName} 목표가 도달!`,
-            `현재 ${price.toLocaleString()}원 ≥ 목표 ${parseInt(alert.targetPrice).toLocaleString()}원`
-          );
-        }
-      } catch(e) { console.warn('[Notifications] Stock check failed:', e.message); }
+        if (price > 0 && price >= alert.targetPrice)
+          this.notify(`📈 ${alert.stockName} 목표가 도달!`, `현재 ${price.toLocaleString()}원 ≥ 목표 ${parseInt(alert.targetPrice).toLocaleString()}원`);
+      } catch(e) { console.warn('[Notifications] Stock check:', e.message); }
     }));
   }
 };
 
-/* ── App ── */
 const App = {
   async init() {
-    console.log('[App] Starting finance dashboard');
     const cfg = Storage.get(Config.LS.CONFIG);
     if (!cfg || !cfg.appkey || !cfg.appsecret) { Settings.show(); return; }
     Settings.showDashboard();
     ManualAssets.checkMonthly();
     await this.refresh();
   },
-
   async refresh() {
-    console.log('[App] Refreshing all data');
     this._setStatus('loading');
     ManualAssets.render();
     Goals.render(Portfolio.etfTotalAmount);
@@ -996,28 +924,25 @@ const App = {
       Portfolio.render(portfolioRes.value);
       this._setStatus('ok', '포트폴리오 업데이트됨');
     } else {
-      console.error('[App] Portfolio error:', portfolioRes.reason?.message);
       Portfolio.renderError(portfolioRes.reason?.message || '잔고 조회 실패');
       this._setStatus('error', '포트폴리오 조회 실패');
     }
 
     const kospiErr  = kospiRes.status === 'rejected' ? kospiRes.reason?.message : null;
     const kospiData = kospiRes.status === 'fulfilled' ? kospiRes.value : null;
-    if (kospiErr) console.error('[App] KOSPI error:', kospiErr);
     KospiTracker.render(kospiData, kospiErr);
 
-    Notifications.checkToday(KospiTracker.currentPrice);
+    Notifications.checkToday();
     await Notifications.checkStockAlerts();
   },
-
   _setStatus(state, msg) {
     const dot  = document.getElementById('api-status-dot');
     const text = document.getElementById('api-status-text');
     if (!dot || !text) return;
     const now = new Date().toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' });
     if (state === 'loading') { dot.className = 'status-dot'; text.textContent = '불러오는 중...'; }
-    else if (state === 'ok') { dot.className = 'status-dot ok'; text.textContent = `${msg} · ${now}`; }
-    else { dot.className = 'status-dot err'; text.textContent = `${msg} · ${now}`; }
+    else if (state === 'ok')  { dot.className = 'status-dot ok';  text.textContent = `${msg} · ${now}`; }
+    else                      { dot.className = 'status-dot err'; text.textContent = `${msg} · ${now}`; }
   }
 };
 

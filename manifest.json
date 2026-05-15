@@ -1,0 +1,18 @@
+{
+  "name": "재테크 대시보드",
+  "short_name": "재테크",
+  "description": "한국투자증권 API 연동 개인 재테크 대시보드",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0f1923",
+  "theme_color": "#0f1923",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

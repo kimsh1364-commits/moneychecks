@@ -1,0 +1,93 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1c3d5a"/>
+      <stop offset="100%" stop-color="#0d1f2d"/>
+    </linearGradient>
+    <radialGradient id="bag" cx="35%" cy="28%" r="70%">
+      <stop offset="0%" stop-color="#fff7cc"/>
+      <stop offset="38%" stop-color="#f9c423"/>
+      <stop offset="82%" stop-color="#d4840a"/>
+      <stop offset="100%" stop-color="#a05e08"/>
+    </radialGradient>
+    <radialGradient id="knot" cx="38%" cy="32%" r="62%">
+      <stop offset="0%" stop-color="#fef3c7"/>
+      <stop offset="100%" stop-color="#d97706"/>
+    </radialGradient>
+    <radialGradient id="clv" cx="36%" cy="30%" r="68%">
+      <stop offset="0%" stop-color="#d1fae5"/>
+      <stop offset="48%" stop-color="#34d399"/>
+      <stop offset="100%" stop-color="#047857"/>
+    </radialGradient>
+    <filter id="shdw">
+      <feDropShadow dx="2" dy="5" stdDeviation="9" flood-color="rgba(0,0,0,0.45)"/>
+    </filter>
+  </defs>
+
+  <!-- Background rounded square -->
+  <rect width="512" height="512" rx="112" fill="url(#bg)"/>
+
+  <!-- Soft glow behind bag -->
+  <ellipse cx="256" cy="335" rx="195" ry="170" fill="rgba(249,196,35,0.07)"/>
+
+  <!-- ══ MONEY BAG ══ -->
+  <g filter="url(#shdw)">
+    <!-- Bag body -->
+    <ellipse cx="256" cy="342" rx="158" ry="136" fill="url(#bag)"/>
+    <!-- Neck -->
+    <path d="M 196 248 C 192 218 207 200 256 200 C 305 200 320 218 316 248 L 302 276 Q 256 263 210 276 Z" fill="#e09010"/>
+  </g>
+
+  <!-- Knot outer circle -->
+  <circle cx="256" cy="192" r="42" fill="#c47a08"/>
+  <!-- Knot inner circle -->
+  <circle cx="256" cy="192" r="28" fill="url(#knot)"/>
+  <!-- Knot shine -->
+  <ellipse cx="246" cy="183" rx="10" ry="7" fill="rgba(255,255,255,0.45)" transform="rotate(-20 246 183)"/>
+
+  <!-- Tie loops (cute ears) -->
+  <ellipse cx="220" cy="163" rx="24" ry="18" fill="#c47a08" transform="rotate(-18 220 163)"/>
+  <ellipse cx="292" cy="163" rx="24" ry="18" fill="#c47a08" transform="rotate(18 292 163)"/>
+  <ellipse cx="220" cy="163" rx="14" ry="11" fill="#e8a014" transform="rotate(-18 220 163)"/>
+  <ellipse cx="292" cy="163" rx="14" ry="11" fill="#e8a014" transform="rotate(18 292 163)"/>
+
+  <!-- Bag main highlight (shine) -->
+  <ellipse cx="200" cy="296" rx="52" ry="30" fill="rgba(255,255,255,0.28)" transform="rotate(-28 200 296)"/>
+  <!-- Bag secondary highlight (bottom) -->
+  <ellipse cx="298" cy="432" rx="38" ry="19" fill="rgba(255,255,255,0.09)"/>
+
+  <!-- ══ FOUR-LEAF CLOVER ══ -->
+  <!-- Top leaf -->
+  <ellipse cx="256" cy="281" rx="34" ry="46" fill="url(#clv)"/>
+  <!-- Bottom leaf -->
+  <ellipse cx="256" cy="375" rx="34" ry="46" fill="url(#clv)"/>
+  <!-- Left leaf -->
+  <ellipse cx="210" cy="328" rx="46" ry="34" fill="url(#clv)"/>
+  <!-- Right leaf -->
+  <ellipse cx="302" cy="328" rx="46" ry="34" fill="url(#clv)"/>
+
+  <!-- Leaf highlights -->
+  <ellipse cx="242" cy="285" rx="13" ry="19" fill="rgba(255,255,255,0.32)" transform="rotate(-12 242 285)"/>
+  <ellipse cx="214" cy="316" rx="19" ry="13" fill="rgba(255,255,255,0.22)" transform="rotate(-12 214 316)"/>
+
+  <!-- Clover center -->
+  <circle cx="256" cy="328" r="28" fill="#065f46"/>
+  <circle cx="256" cy="328" r="17" fill="#047857"/>
+  <circle cx="250" cy="322" r="6" fill="rgba(255,255,255,0.25)"/>
+
+  <!-- Clover stem -->
+  <path d="M 256 384 Q 247 408 251 426" stroke="#065f46" stroke-width="10" fill="none" stroke-linecap="round"/>
+
+  <!-- ══ SPARKLES ══ -->
+  <!-- 4-point star — top left -->
+  <path d="M 128 198 L 133 213 L 148 218 L 133 223 L 128 238 L 123 223 L 108 218 L 123 213 Z" fill="#fde68a" opacity="0.95"/>
+  <!-- 4-point star — top right -->
+  <path d="M 390 176 L 394 188 L 406 192 L 394 196 L 390 208 L 386 196 L 374 192 L 386 188 Z" fill="#fde68a" opacity="0.88"/>
+  <!-- Small dot sparkles -->
+  <circle cx="146" cy="390" r="6" fill="#6ee7b7" opacity="0.82"/>
+  <circle cx="393" cy="315" r="5" fill="#6ee7b7" opacity="0.72"/>
+  <circle cx="398" cy="398" r="4" fill="#fcd34d" opacity="0.68"/>
+  <circle cx="108" cy="318" r="4" fill="#fcd34d" opacity="0.62"/>
+  <circle cx="162" cy="452" r="3" fill="#86efac" opacity="0.55"/>
+  <circle cx="375" cy="448" r="3" fill="#fbbf24" opacity="0.55"/>
+</svg>
