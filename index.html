@@ -470,6 +470,12 @@ const KISApi = {
     }
     return data;
   },
+  // Ensures a valid token is in cache before parallel calls.
+  // Prevents concurrent token issuance (KIS EGW00133 rate-limit).
+  async ensureToken() {
+    if (TokenManager.getValid()) return;
+    await this._call('token');
+  },
   getPortfolio()      { return this._call('balance'); },
   getKospiPrice()     { return this._call('kospi'); },
   getStockPrice(code) { return this._call('stockprice', { stockCode: code }); }
@@ -914,6 +920,9 @@ const App = {
     ManualAssets.render();
     Goals.render(Portfolio.etfTotalAmount);
     Notifications.render();
+
+    // Issue token once before parallel calls to prevent concurrent token issuance (EGW00133)
+    try { await KISApi.ensureToken(); } catch(e) { /* each call will handle its own error */ }
 
     const [portfolioRes, kospiRes] = await Promise.allSettled([
       KISApi.getPortfolio(),
