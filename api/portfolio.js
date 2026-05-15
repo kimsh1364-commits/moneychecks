@@ -1,6 +1,6 @@
 // KIS (Korea Investment Securities) API Proxy
 // Handles CORS bypass for browser clients.
-// Flow: receive credentials from client → optionally reuse cached token → query balance / KOSPI
+// Flow: receive credentials from client -> optionally reuse cached token -> query balance / KOSPI
 
 const KIS_BASE = 'https://openapi.koreainvestment.com:9443';
 
@@ -22,7 +22,7 @@ async function issueToken(appkey, appsecret) {
   };
 }
 
-// Query domestic stock balance (actual investment)
+// Query domestic stock balance (actual investment account)
 async function getBalance(token, appkey, appsecret, accountNo, productCode) {
   const params = new URLSearchParams({
     CANO: accountNo,
@@ -81,7 +81,7 @@ async function getKospiPrice(token, appkey, appsecret) {
   return res.json();
 }
 
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
   // CORS preflight
   if (req.method === 'OPTIONS') {
     res.status(204).end();
@@ -130,7 +130,7 @@ export default async function handler(req, res) {
 
     if (action === 'balance') {
       if (!accountNo || !productCode) {
-        res.status(400).json({ error: true, message: 'accountNo and productCode required for balance' });
+        res.status(400).json({ error: true, message: 'accountNo and productCode required' });
         return;
       }
       const balance = await getBalance(token, appkey, appsecret, accountNo, productCode);
@@ -149,4 +149,4 @@ export default async function handler(req, res) {
     console.error('[portfolio] Error:', err.message);
     res.status(500).json({ error: true, message: err.message });
   }
-}
+};
