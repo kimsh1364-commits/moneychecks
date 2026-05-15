@@ -374,7 +374,7 @@
         <div class="step-label">STEP 3</div>
         <div class="step-content">
           <strong>앱 신청</strong><br>
-          로그인 후 <strong>[API신청]</strong> 메뉴 클릭<br>
+          로그인 후 <strong>[open api 서비스 신청]</strong> 검색<br>
           → 개인 투자 목적 선택<br>
           → <strong>실전투자</strong> 신청 (모의투자 ❌)
         </div>
@@ -383,7 +383,7 @@
         <div class="step-label">STEP 4</div>
         <div class="step-content">
           <strong>앱키 / 앱시크릿 발급</strong><br>
-          신청 완료 후 <strong>[내 앱]</strong> 메뉴에서 확인<br>
+          신청 완료 후 <strong>[신청현황]</strong>에서 확인<br>
           → 앱키(App Key)와 앱시크릿(App Secret)을 복사하세요.
         </div>
       </div>
@@ -593,7 +593,6 @@ const Settings = {
     document.getElementById('settings-screen').classList.add('active');
     document.getElementById('dashboard').classList.remove('active');
     const cfg = Storage.get(Config.LS.CONFIG) || {};
-    // Show placeholders only — never expose actual key values in DOM
     document.getElementById('input-appkey').value    = cfg.appkey    ? '••••••••' : '';
     document.getElementById('input-appsecret').value = cfg.appsecret ? '••••••••' : '';
     document.getElementById('input-account').value   = cfg.accountNo   || '';
@@ -686,7 +685,6 @@ const Portfolio = {
 
       const animEl = document.getElementById('anim-total');
       if (animEl) Animation.countUp(animEl, Math.round(totalEval/10000), '만원');
-
       Goals.render(this.etfTotalAmount);
     } catch(e) {
       console.error('[Portfolio] render error:', e);
@@ -746,7 +744,6 @@ const Goals = {
         </div>`;
     }).join('');
 
-    // Animate fills after DOM paint
     requestAnimationFrame(() => {
       defs.forEach(g => {
         const target  = Config.GOAL_TARGETS[g.key];
@@ -1060,7 +1057,6 @@ const App = {
   }
 };
 
-// Close modals on overlay click
 document.querySelectorAll('.modal-overlay').forEach(o =>
   o.addEventListener('click', e => { if (e.target === o) o.classList.remove('active'); })
 );
