@@ -92,13 +92,16 @@
     .asset-list { display: flex; flex-direction: column; gap: 10px; }
     .asset-item {
       background: var(--card2); border-radius: 12px;
-      padding: 12px 14px; display: flex; align-items: center; justify-content: space-between;
+      padding: 12px 14px;
     }
+    .asset-item-row { display: flex; align-items: center; justify-content: space-between; }
     .asset-info { flex: 1; }
     .asset-name { font-size: 0.9rem; font-weight: 500; }
     .asset-memo { font-size: 0.75rem; color: var(--muted); margin-top: 2px; }
+    .asset-monthly { font-size: 0.75rem; color: var(--accent); margin-top: 3px; }
+    .asset-monthly.paused { color: var(--muted); text-decoration: line-through; }
     .asset-amount { font-size: 1rem; font-weight: 700; color: var(--profit); margin-right: 8px; }
-    .asset-actions { display: flex; gap: 4px; }
+    .asset-actions { display: flex; gap: 4px; flex-wrap: wrap; justify-content: flex-end; }
     .sm-btn {
       background: none; border: 1px solid var(--border); color: var(--muted);
       border-radius: 6px; padding: 4px 8px; font-size: 0.75rem;
@@ -106,6 +109,11 @@
     }
     .sm-btn:hover { border-color: var(--accent); color: var(--accent); }
     .sm-btn.del:hover { border-color: var(--loss); color: var(--loss); }
+    .sm-btn.pause { border-color: var(--loss); color: var(--loss); }
+    .sm-btn.pause:hover { background: rgba(248,113,113,.1); }
+    .sm-btn.resume { border-color: var(--profit); color: var(--profit); }
+    .sm-btn.resume:hover { background: rgba(74,222,128,.1); }
+    .asset-monthly-row { display: flex; align-items: center; justify-content: space-between; margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--border); }
     .add-asset-btn {
       width: 100%; margin-top: 12px; padding: 10px;
       border: 1.5px dashed var(--border); background: none; color: var(--muted);
@@ -424,6 +432,11 @@
       <div class="form-group">
         <label>메모 (선택)</label>
         <input type="text" id="asset-memo-input" placeholder="부가 설명">
+      </div>
+      <div class="form-group">
+        <label>매달 추가 금액 (만원, 선택)</label>
+        <input type="number" id="asset-monthly-input" placeholder="예: 70" inputmode="decimal" min="0">
+        <div class="form-hint">설정 시 매달 앱 첫 접속 시 자동으로 금액이 증가합니다.</div>
       </div>
       <div style="display:flex;gap:8px">
         <button class="btn btn-ghost" style="flex:1" onclick="Modals.close('asset-modal')">취소</button>
@@ -770,11 +783,42 @@ const Goals = {
 
 /* ──────────────────────────────────────────
    ManualAssets — add / edit / delete with localStorage
+   Asset shape: { name, amount, memo, monthlyAdd, monthlyActive, lastUpdated }
 ────────────────────────────────────────── */
 const ManualAssets = {
   items: [],
   load()    { this.items = Storage.get(Config.LS.ASSETS) || []; },
   persist() { Storage.set(Config.LS.ASSETS, this.items); },
+
+  /* Apply monthlyAdd once per calendar month on app start */
+  checkMonthly() {
+    this.load();
+    const now = new Date();
+    const currentMonth = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+    let changed = false;
+    this.items.forEach(item => {
+      const add = parseFloat(item.monthlyAdd) || 0;
+      if (add > 0 && item.monthlyActive !== false && item.lastUpdated !== currentMonth) {
+        item.amount = parseFloat(item.amount) + add;
+        item.lastUpdated = currentMonth;
+        changed = true;
+      }
+    });
+    if (changed) {
+      this.persist();
+      console.log('[ManualAssets] Monthly auto-update applied');
+    }
+  },
+
+  togglePause(i) {
+    this.load();
+    const item = this.items[i];
+    item.monthlyActive = item.monthlyActive === false;
+    this.persist();
+    const state = item.monthlyActive === false ? '중단' : '재개';
+    this.render();
+    showToast(`매달 자동 추가를 ${state}했습니다.`);
+  },
 
   render() {
     this.load();
@@ -783,41 +827,71 @@ const ManualAssets = {
       el.innerHTML = '<div class="loading" style="padding:8px 0">수동 자산을 추가해보세요.</div>';
       return;
     }
-    el.innerHTML = `<div class="asset-list">${this.items.map((item, i) => `
-      <div class="asset-item">
-        <div class="asset-info">
-          <div class="asset-name">${item.name}</div>
-          ${item.memo ? `<div class="asset-memo">${item.memo}</div>` : ''}
-        </div>
-        <span class="asset-amount">${parseFloat(item.amount).toLocaleString()}만</span>
-        <div class="asset-actions">
-          <button class="sm-btn" onclick="ManualAssets.openEdit(${i})">수정</button>
-          <button class="sm-btn del" onclick="ManualAssets.del(${i})">삭제</button>
-        </div>
-      </div>`).join('')}</div>`;
+    el.innerHTML = `<div class="asset-list">${this.items.map((item, i) => {
+      const monthlyAdd = parseFloat(item.monthlyAdd) || 0;
+      const isPaused   = item.monthlyActive === false;
+      const monthlyRow = monthlyAdd > 0 ? `
+        <div class="asset-monthly-row">
+          <span class="asset-monthly ${isPaused ? 'paused' : ''}">
+            ${isPaused
+              ? `+${monthlyAdd.toLocaleString()}만/월 (중단됨)`
+              : `+${monthlyAdd.toLocaleString()}만/월 자동 추가`}
+          </span>
+          <button class="sm-btn ${isPaused ? 'resume' : 'pause'}"
+            onclick="ManualAssets.togglePause(${i})">
+            ${isPaused ? '다시 재개' : '잠시 중단'}
+          </button>
+        </div>` : '';
+      return `
+        <div class="asset-item">
+          <div class="asset-item-row">
+            <div class="asset-info">
+              <div class="asset-name">${item.name}</div>
+              ${item.memo ? `<div class="asset-memo">${item.memo}</div>` : ''}
+            </div>
+            <span class="asset-amount">${parseFloat(item.amount).toLocaleString()}만</span>
+            <div class="asset-actions">
+              <button class="sm-btn" onclick="ManualAssets.openEdit(${i})">수정</button>
+              <button class="sm-btn del" onclick="ManualAssets.del(${i})">삭제</button>
+            </div>
+          </div>
+          ${monthlyRow}
+        </div>`;
+    }).join('')}</div>`;
   },
 
   _openModal(title, i, item) {
-    document.getElementById('asset-modal-title').textContent = title;
-    document.getElementById('asset-edit-id').value          = i !== null ? i : '';
-    document.getElementById('asset-name-input').value       = item?.name   || '';
-    document.getElementById('asset-amount-input').value     = item?.amount || '';
-    document.getElementById('asset-memo-input').value       = item?.memo   || '';
+    document.getElementById('asset-modal-title').textContent  = title;
+    document.getElementById('asset-edit-id').value           = i !== null ? i : '';
+    document.getElementById('asset-name-input').value        = item?.name       || '';
+    document.getElementById('asset-amount-input').value      = item?.amount     || '';
+    document.getElementById('asset-memo-input').value        = item?.memo       || '';
+    document.getElementById('asset-monthly-input').value     = item?.monthlyAdd > 0 ? item.monthlyAdd : '';
     Modals.open('asset-modal');
   },
   openAdd()    { this._openModal('자산 추가', null, null); },
   openEdit(i)  { this.load(); this._openModal('자산 수정', i, this.items[i]); },
 
   save() {
-    const name   = document.getElementById('asset-name-input').value.trim();
-    const amount = parseFloat(document.getElementById('asset-amount-input').value);
-    const memo   = document.getElementById('asset-memo-input').value.trim();
-    const idxStr = document.getElementById('asset-edit-id').value;
-    if (!name)              { showToast('항목명을 입력해주세요.'); return; }
-    if (isNaN(amount)||amount<0) { showToast('올바른 금액을 입력해주세요.'); return; }
+    const name       = document.getElementById('asset-name-input').value.trim();
+    const amount     = parseFloat(document.getElementById('asset-amount-input').value);
+    const memo       = document.getElementById('asset-memo-input').value.trim();
+    const monthlyAdd = parseFloat(document.getElementById('asset-monthly-input').value) || 0;
+    const idxStr     = document.getElementById('asset-edit-id').value;
+    if (!name)               { showToast('항목명을 입력해주세요.'); return; }
+    if (isNaN(amount) || amount < 0) { showToast('올바른 금액을 입력해주세요.'); return; }
     this.load();
-    if (idxStr === '') this.items.push({ name, amount, memo });
-    else this.items[parseInt(idxStr)] = { name, amount, memo };
+    if (idxStr === '') {
+      this.items.push({ name, amount, memo, monthlyAdd, monthlyActive: true, lastUpdated: null });
+    } else {
+      const idx      = parseInt(idxStr);
+      const existing = this.items[idx];
+      this.items[idx] = {
+        name, amount, memo, monthlyAdd,
+        monthlyActive: existing.monthlyActive !== false,
+        lastUpdated:   existing.lastUpdated || null
+      };
+    }
     this.persist();
     Modals.close('asset-modal');
     this.render();
@@ -1008,6 +1082,7 @@ const App = {
     const cfg = Storage.get(Config.LS.CONFIG);
     if (!cfg || !cfg.appkey || !cfg.appsecret) { Settings.show(); return; }
     Settings.showDashboard();
+    ManualAssets.checkMonthly();
     await this.refresh();
   },
 
