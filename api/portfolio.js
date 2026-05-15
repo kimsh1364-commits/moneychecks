@@ -1,10 +1,9 @@
 // KIS (Korea Investment Securities) API Proxy
 // Handles CORS bypass for browser clients.
-// Flow: receive credentials from client -> optionally reuse cached token -> query balance / KOSPI
+// Flow: receive credentials from client -> optionally reuse cached token -> query balance / KOSPI / stock price
 
 const KIS_BASE = 'https://openapi.koreainvestment.com:9443';
 
-// Issue a new OAuth2 bearer token from KIS
 async function issueToken(appkey, appsecret) {
   const res = await fetch(`${KIS_BASE}/oauth2/tokenP`, {
     method: 'POST',
@@ -22,7 +21,6 @@ async function issueToken(appkey, appsecret) {
   };
 }
 
-// Query domestic stock balance (actual investment account)
 async function getBalance(token, appkey, appsecret, accountNo, productCode) {
   const params = new URLSearchParams({
     CANO: accountNo,
@@ -39,15 +37,7 @@ async function getBalance(token, appkey, appsecret, accountNo, productCode) {
   });
   const res = await fetch(
     `${KIS_BASE}/uapi/domestic-stock/v1/trading/inquire-balance?${params}`,
-    {
-      headers: {
-        Authorization: token,
-        appkey,
-        appsecret,
-        tr_id: 'TTTC8434R',
-        custtype: 'P'
-      }
-    }
+    { headers: { Authorization: token, appkey, appsecret, tr_id: 'TTTC8434R', custtype: 'P' } }
   );
   if (!res.ok) {
     const text = await res.text();
@@ -56,23 +46,11 @@ async function getBalance(token, appkey, appsecret, accountNo, productCode) {
   return res.json();
 }
 
-// Query KOSPI composite index current price
 async function getKospiPrice(token, appkey, appsecret) {
-  const params = new URLSearchParams({
-    FID_COND_MRKT_DIV_CODE: 'U',
-    FID_INPUT_ISCD: '0001'
-  });
+  const params = new URLSearchParams({ FID_COND_MRKT_DIV_CODE: 'U', FID_INPUT_ISCD: '0001' });
   const res = await fetch(
     `${KIS_BASE}/uapi/domestic-stock/v1/quotations/inquire-index-price?${params}`,
-    {
-      headers: {
-        Authorization: token,
-        appkey,
-        appsecret,
-        tr_id: 'FHPUP02100000',
-        custtype: 'P'
-      }
-    }
+    { headers: { Authorization: token, appkey, appsecret, tr_id: 'FHPUP02100000', custtype: 'P' } }
   );
   if (!res.ok) {
     const text = await res.text();
@@ -81,21 +59,29 @@ async function getKospiPrice(token, appkey, appsecret) {
   return res.json();
 }
 
-module.exports = async function handler(req, res) {
-  // CORS preflight
-  if (req.method === 'OPTIONS') {
-    res.status(204).end();
-    return;
+async function getStockPrice(token, appkey, appsecret, stockCode) {
+  const params = new URLSearchParams({
+    FID_COND_MRKT_DIV_CODE: 'J',
+    FID_INPUT_ISCD: stockCode
+  });
+  const res = await fetch(
+    `${KIS_BASE}/uapi/domestic-stock/v1/quotations/inquire-price?${params}`,
+    { headers: { Authorization: token, appkey, appsecret, tr_id: 'FHKST01010100', custtype: 'P' } }
+  );
+  if (!res.ok) {
+    const text = await res.text();
+    throw new Error(`Stock price query failed [${res.status}]: ${text.slice(0, 200)}`);
   }
+  return res.json();
+}
 
-  if (req.method !== 'POST') {
-    res.status(405).json({ error: true, message: 'Method not allowed' });
-    return;
-  }
+module.exports = async function handler(req, res) {
+  if (req.method === 'OPTIONS') { res.status(204).end(); return; }
+  if (req.method !== 'POST') { res.status(405).json({ error: true, message: 'Method not allowed' }); return; }
 
   const {
     appkey, appsecret, accountNo, productCode,
-    cachedToken, tokenExpiresAt, action
+    cachedToken, tokenExpiresAt, action, stockCode
   } = req.body || {};
 
   if (!appkey || !appsecret) {
@@ -104,13 +90,12 @@ module.exports = async function handler(req, res) {
   }
 
   try {
-    const TOKEN_BUFFER = 5 * 60 * 1000; // 5-minute safety buffer
+    const TOKEN_BUFFER = 5 * 60 * 1000;
     const now = Date.now();
     let token;
     let newTokenData = null;
 
     if (cachedToken && tokenExpiresAt && now < (tokenExpiresAt - TOKEN_BUFFER)) {
-      // Reuse valid cached token supplied by the client
       token = cachedToken;
       console.log('[portfolio] Reusing cached token');
     } else {
@@ -121,10 +106,7 @@ module.exports = async function handler(req, res) {
     }
 
     if (action === 'token') {
-      res.status(200).json({
-        token,
-        expires_at: newTokenData ? newTokenData.expires_at : tokenExpiresAt
-      });
+      res.status(200).json({ token, expires_at: newTokenData ? newTokenData.expires_at : tokenExpiresAt });
       return;
     }
 
@@ -141,6 +123,16 @@ module.exports = async function handler(req, res) {
     if (action === 'kospi') {
       const kospi = await getKospiPrice(token, appkey, appsecret);
       res.status(200).json({ kospi, ...(newTokenData && { newToken: newTokenData }) });
+      return;
+    }
+
+    if (action === 'stockprice') {
+      if (!stockCode) {
+        res.status(400).json({ error: true, message: '종목코드가 필요합니다.' });
+        return;
+      }
+      const stockprice = await getStockPrice(token, appkey, appsecret, stockCode);
+      res.status(200).json({ stockprice, ...(newTokenData && { newToken: newTokenData }) });
       return;
     }
 
