@@ -45,7 +45,6 @@
     }
     .icon-btn:hover { color: var(--text); }
 
-    /* ── Total Assets ── */
     .total-assets-card {
       margin: 10px 16px 0;
       background: linear-gradient(135deg, #1a2e4a, #1a2535);
@@ -100,8 +99,6 @@
     .asset-info { flex: 1; }
     .asset-name { font-size: 0.9rem; font-weight: 500; }
     .asset-memo { font-size: 0.75rem; color: var(--muted); margin-top: 2px; }
-    .asset-monthly { font-size: 0.75rem; color: var(--accent); margin-top: 3px; }
-    .asset-monthly.paused { color: var(--muted); text-decoration: line-through; }
     .asset-amount { font-size: 1rem; font-weight: 700; color: var(--profit); margin-right: 8px; }
     .asset-actions { display: flex; gap: 4px; flex-wrap: wrap; justify-content: flex-end; }
     .sm-btn {
@@ -235,7 +232,6 @@
 </head>
 <body>
 
-<!-- ══════════════ SETTINGS SCREEN ══════════════ -->
 <div id="settings-screen">
   <div class="settings-title">💰 재테크 대시보드</div>
   <div class="settings-subtitle">한국투자증권 API 키를 입력해 내 포트폴리오를 자동으로 불러옵니다.</div>
@@ -263,7 +259,6 @@
   <button class="btn btn-primary btn-full" style="margin-top:8px" onclick="Settings.save()">저장하고 대시보드로 이동 →</button>
 </div>
 
-<!-- ══════════════ MAIN DASHBOARD ══════════════ -->
 <div id="dashboard">
   <div class="app-header">
     <h1>💰 재테크 대시보드</h1>
@@ -280,7 +275,6 @@
     </div>
   </div>
 
-  <!-- Total Assets Summary -->
   <div class="total-assets-card">
     <div class="total-assets-label">💼 전체 자산 합계</div>
     <div class="total-assets-value" id="total-assets-value">-</div>
@@ -296,39 +290,32 @@
     </div>
   </div>
 
-  <!-- ETF Portfolio -->
   <div class="card">
     <div class="card-header"><h2>📊 ETF 포트폴리오 <span class="badge badge-auto">자동</span></h2></div>
     <div id="portfolio-content"><div class="loading"><span class="spinner"></span>잔고 조회 중...</div></div>
   </div>
 
-  <!-- Goals -->
   <div class="card">
     <div class="card-header"><h2>🎯 목표 달성률</h2></div>
     <div id="goals-content"></div>
   </div>
 
-  <!-- Manual Assets -->
   <div class="card">
     <div class="card-header"><h2>🏦 수동 자산 <span class="badge badge-manual">수동</span></h2></div>
     <div id="manual-assets-content"></div>
     <button class="add-asset-btn" onclick="ManualAssets.openAdd()">+ 자산 추가</button>
   </div>
 
-  <!-- KOSPI Tracker -->
   <div class="card">
     <div class="card-header"><h2>📈 코스피 트래커</h2></div>
     <div id="kospi-content"><div class="loading"><span class="spinner"></span>코스피 조회 중...</div></div>
   </div>
 
-  <!-- Notifications -->
   <div class="card">
     <div class="card-header"><h2>🔔 알림 설정</h2></div>
     <div id="notifications-content"></div>
   </div>
 </div>
-
-<!-- ══════════════ MODALS ══════════════ -->
 
 <!-- API Guide Modal -->
 <div class="modal-overlay" id="guide-modal">
@@ -357,7 +344,7 @@
   </div>
 </div>
 
-<!-- Asset Add/Edit Modal -->
+<!-- Asset Modal -->
 <div class="modal-overlay" id="asset-modal">
   <div class="modal">
     <div class="modal-handle"></div>
@@ -372,7 +359,7 @@
         <input type="text" id="asset-memo-input" placeholder="부가 설명"></div>
       <div class="form-group"><label>매달 추가 금액 (만원, 선택)</label>
         <input type="number" id="asset-monthly-input" placeholder="예: 70" inputmode="decimal" min="0">
-        <div class="form-hint">설정 시 매달 앱 첫 접속 시 자동으로 금액이 증가합니다.</div></div>
+        <div class="form-hint">매월 10일 앱 첫 접속 시 자동으로 금액이 증가합니다.</div></div>
       <div style="display:flex;gap:8px">
         <button class="btn btn-ghost" style="flex:1" onclick="Modals.close('asset-modal')">취소</button>
         <button class="btn btn-primary" style="flex:2" onclick="ManualAssets.save()">저장</button>
@@ -381,7 +368,7 @@
   </div>
 </div>
 
-<!-- Alert Add Modal -->
+<!-- Alert Modal -->
 <div class="modal-overlay" id="alert-modal">
   <div class="modal">
     <div class="modal-handle"></div>
@@ -425,7 +412,8 @@ const Config = {
   API_URL: '/api/portfolio',
   LS: {
     CONFIG: 'ftd_config', TOKEN: 'ftd_token', ASSETS: 'ftd_assets',
-    ALERTS: 'ftd_alerts', KOSPI: 'ftd_kospi_target', GOALS: 'ftd_goals'
+    ALERTS: 'ftd_alerts', KOSPI: 'ftd_kospi_target', GOALS: 'ftd_goals',
+    TOTAL_MILESTONE: 'ftd_total_milestone'
   },
   GOAL_TARGETS: { emergency: 500, etf: 500, joyak: 4000 }
 };
@@ -441,7 +429,7 @@ const TokenManager = {
   getValid() {
     const c = Storage.get(Config.LS.TOKEN);
     if (c && Date.now() < c.expires_at - this.BUFFER) return c;
-    if (c) { Storage.remove(Config.LS.TOKEN); console.log('[TokenManager] Token expired'); }
+    if (c) { Storage.remove(Config.LS.TOKEN); }
     return null;
   },
   store(token, expires_at) { Storage.set(Config.LS.TOKEN, { token, expires_at }); },
@@ -466,12 +454,9 @@ const KISApi = {
     if (data.error) throw new Error(data.message || 'API 오류');
     if (data.newToken) {
       TokenManager.store(data.newToken.token, data.newToken.expires_at);
-      console.log('[KISApi] New token cached');
     }
     return data;
   },
-  // Ensures a valid token is in cache before parallel calls.
-  // Prevents concurrent token issuance (KIS EGW00133 rate-limit).
   async ensureToken() {
     if (TokenManager.getValid()) return;
     await this._call('token');
@@ -517,6 +502,24 @@ const TotalAssets = {
     if (totalEl) Animation.countUp(totalEl, total, '만원');
     if (etfEl)    etfEl.textContent    = etf.toLocaleString()    + '만';
     if (manualEl) manualEl.textContent = manual.toLocaleString() + '만';
+    return total;
+  },
+  // 10만원 이상 오를 때마다 축하 알림
+  checkMilestone(total) {
+    if (total <= 0) return;
+    const prev = parseFloat(Storage.get(Config.LS.TOTAL_MILESTONE) || 0);
+    if (prev === 0) {
+      Storage.set(Config.LS.TOTAL_MILESTONE, total);
+      return;
+    }
+    if (total - prev >= 10) {
+      const diff = Math.floor(total - prev);
+      Notifications.notify(
+        '🎉 자산 증가 축하해요!',
+        `전체 자산 ${total.toLocaleString()}만원 달성! (+${diff.toLocaleString()}만원)`
+      );
+      Storage.set(Config.LS.TOTAL_MILESTONE, total);
+    }
   }
 };
 
@@ -668,6 +671,8 @@ const ManualAssets = {
   checkMonthly() {
     this.load();
     const now = new Date();
+    // 매월 10일 이후에만 자동 추가
+    if (now.getDate() < 10) return;
     const currentMonth = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`;
     let changed = false;
     this.items.forEach(item => {
@@ -678,16 +683,15 @@ const ManualAssets = {
         changed = true;
       }
     });
-    if (changed) { this.persist(); console.log('[ManualAssets] Monthly auto-update applied'); }
+    if (changed) this.persist();
   },
   togglePause(i) {
     this.load();
     const item = this.items[i];
     item.monthlyActive = item.monthlyActive === false;
     this.persist();
-    const state = item.monthlyActive === false ? '중단' : '재개';
     this.render();
-    showToast(`매달 자동 추가를 ${state}했습니다.`);
+    showToast(item.monthlyActive === false ? '매달 자동 추가를 중단했습니다.' : '매달 자동 추가를 재개했습니다.');
   },
   render() {
     this.load();
@@ -701,8 +705,8 @@ const ManualAssets = {
       const isPaused   = item.monthlyActive === false;
       const monthlyRow = monthlyAdd > 0 ? `
         <div class="asset-monthly-row">
-          <span class="asset-monthly ${isPaused ? 'paused' : ''}">
-            ${isPaused ? `+${monthlyAdd.toLocaleString()}만/월 (중단됨)` : `+${monthlyAdd.toLocaleString()}만/월 자동 추가`}
+          <span style="font-size:.75rem;color:${isPaused ? 'var(--muted)' : 'var(--accent)'};${isPaused ? 'text-decoration:line-through' : ''}">
+            ${isPaused ? `+${monthlyAdd.toLocaleString()}만/월 (중단됨)` : `+${monthlyAdd.toLocaleString()}만/월 · 매월 10일 자동`}
           </span>
           <button class="sm-btn ${isPaused ? 'resume' : 'pause'}" onclick="ManualAssets.togglePause(${i})">
             ${isPaused ? '다시 재개' : '잠시 중단'}
@@ -921,8 +925,7 @@ const App = {
     Goals.render(Portfolio.etfTotalAmount);
     Notifications.render();
 
-    // Issue token once before parallel calls to prevent concurrent token issuance (EGW00133)
-    try { await KISApi.ensureToken(); } catch(e) { /* each call will handle its own error */ }
+    try { await KISApi.ensureToken(); } catch(e) { /* each call handles its own error */ }
 
     const [portfolioRes, kospiRes] = await Promise.allSettled([
       KISApi.getPortfolio(),
@@ -940,6 +943,12 @@ const App = {
     const kospiErr  = kospiRes.status === 'rejected' ? kospiRes.reason?.message : null;
     const kospiData = kospiRes.status === 'fulfilled' ? kospiRes.value : null;
     KospiTracker.render(kospiData, kospiErr);
+
+    // 전체 자산 합산 후 이전 대비 +10만원 이상이면 축하 알림
+    ManualAssets.load();
+    const total = (Portfolio.etfTotalAmount || 0) +
+      ManualAssets.items.reduce((s, i) => s + (parseFloat(i.amount) || 0), 0);
+    TotalAssets.checkMilestone(total);
 
     Notifications.checkToday();
     await Notifications.checkStockAlerts();
