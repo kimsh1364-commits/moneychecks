@@ -415,7 +415,7 @@ const Config = {
     ALERTS: 'ftd_alerts', KOSPI: 'ftd_kospi_target', GOALS: 'ftd_goals',
     TOTAL_MILESTONE: 'ftd_total_milestone'
   },
-  GOAL_TARGETS: { emergency: 500, etf: 500, joyak: 4000 }
+  GOAL_TARGETS: { emergency: 500, etf: 500, joyak: 4000, subscription: 300 }
 };
 
 const Storage = {
@@ -455,14 +455,10 @@ const KISApi = {
     if (data.newToken) TokenManager.store(data.newToken.token, data.newToken.expires_at);
     return data;
   },
-  // 토큰 하나를 먼저 발급해 캐시한 뒤 병렬 호출에서 재사용
   async ensureToken() {
     if (TokenManager.getValid()) return;
-    // 'token' 액션은 { token, expires_at } 형식으로 응답함
     const data = await this._call('token');
-    if (data.token && data.expires_at) {
-      TokenManager.store(data.token, data.expires_at);
-    }
+    if (data.token && data.expires_at) TokenManager.store(data.token, data.expires_at);
   },
   getPortfolio()      { return this._call('balance'); },
   getKospiPrice()     { return this._call('kospi'); },
@@ -616,9 +612,10 @@ const Goals = {
   render(etfAmt = 0) {
     this.load();
     const defs = [
-      { key: 'emergency', label: '비상금',     icon: '🛡️', auto: false },
-      { key: 'etf',       label: '모멘텀 ETF', icon: '📈', auto: true  },
-      { key: 'joyak',     label: '도약계좌',   icon: '🚀', auto: false }
+      { key: 'emergency',    label: '비상금',                   icon: '🛡️', auto: false },
+      { key: 'etf',          label: 'KIWOOM 미국S&P500 모멘텀', icon: '📈', auto: true  },
+      { key: 'joyak',        label: '도약계좌',                icon: '🚀', auto: false },
+      { key: 'subscription', label: '청약통장(주택드림)',       icon: '🏠', auto: false }
     ];
     const el = document.getElementById('goals-content');
     el.innerHTML = defs.map(g => {
