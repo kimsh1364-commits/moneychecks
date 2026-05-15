@@ -415,7 +415,8 @@ const Config = {
     ALERTS: 'ftd_alerts', KOSPI: 'ftd_kospi_target', GOALS: 'ftd_goals',
     TOTAL_MILESTONE: 'ftd_total_milestone'
   },
-  GOAL_TARGETS: { emergency: 500, etf: 500, joyak: 4000, subscription: 300 }
+  GOAL_TARGETS: { emergency: 500, etf: 500, joyak: 4000, subscription: 300 },
+  KIWOOM_ETF_CODE: '0137V0'
 };
 
 const Storage = {
@@ -553,6 +554,7 @@ const Settings = {
 
 const Portfolio = {
   etfTotalAmount: 0,
+  kiwoometfAmount: 0,
   render(data) {
     const el = document.getElementById('portfolio-content');
     try {
@@ -560,11 +562,13 @@ const Portfolio = {
       const summary = data?.balance?.output2?.[0] || {};
       if (!items.length) {
         el.innerHTML = '<div class="loading">보유 종목이 없습니다.</div>';
-        this.etfTotalAmount = 0; Goals.render(0); TotalAssets.update(); return;
+        this.etfTotalAmount = 0; this.kiwoometfAmount = 0; Goals.render(0); TotalAssets.update(); return;
       }
       const totalEval = parseFloat(summary.tot_evlu_amt || 0);
       const totalPct  = parseFloat(summary.asst_icdc_erng_rt || 0);
       this.etfTotalAmount = Math.round(totalEval / 10000);
+      const kiwoometfItem = items.find(i => i.pdno === Config.KIWOOM_ETF_CODE);
+      this.kiwoometfAmount = kiwoometfItem ? Math.round(parseFloat(kiwoometfItem.evlu_amt || 0) / 10000) : 0;
       const rows = items.map(item => {
         const name  = item.prdt_name || item.pdno || '-';
         const qty   = parseInt(item.hldg_qty || 0);
@@ -590,7 +594,7 @@ const Portfolio = {
         </table>`;
       const animEl = document.getElementById('anim-total');
       if (animEl) Animation.countUp(animEl, Math.round(totalEval/10000), '만원');
-      Goals.render(this.etfTotalAmount);
+      Goals.render(this.kiwoometfAmount);
       TotalAssets.update();
     } catch(e) {
       console.error('[Portfolio]', e);
@@ -599,6 +603,7 @@ const Portfolio = {
   },
   renderError(msg) {
     document.getElementById('portfolio-content').innerHTML = `<div class="error-msg">⚠️ ${msg}</div>`;
+    this.kiwoometfAmount = 0;
     Goals.render(0);
     TotalAssets.update();
   }
@@ -652,7 +657,7 @@ const Goals = {
     const n = parseFloat(v);
     if (isNaN(n) || n < 0) { showToast('올바른 금액을 입력하세요.'); return; }
     this.load(); this.amounts[key] = n; this.persist();
-    this.render(Portfolio.etfTotalAmount);
+    this.render(Portfolio.kiwoometfAmount);
     showToast('✅ 목표 금액이 업데이트되었습니다.');
   }
 };
@@ -914,7 +919,7 @@ const App = {
   async refresh() {
     this._setStatus('loading');
     ManualAssets.render();
-    Goals.render(Portfolio.etfTotalAmount);
+    Goals.render(Portfolio.kiwoometfAmount);
     Notifications.render();
 
     try { await KISApi.ensureToken(); } catch(e) { /* 에러는 각 호출에서 직접 처리 */ }
